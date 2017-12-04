@@ -77,7 +77,7 @@ your document:
   .mso lists.tmac
 
 If you prefer to learn by examples (which are inherently incomplete), refer to
-`test.me`_ or see the examples in `Motivation`_.
+`test.pdf <test.pdf>`_ or see the examples in `Motivation`_.
 
 FAQ
 ===
