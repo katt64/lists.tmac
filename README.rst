@@ -24,21 +24,6 @@ Given these goals, *lists.tmac* currently fulfills everyone of them, all
 *except* for the facilities to typeset totally ordered lists, which is a
 challenging endeavour.
 
-What the fuck?!
-===============
-Did you take a peek at ``stack.tmac`` and throw up?  Don't worry, you're not the
-only one.  The functionality, capability, and flexibility of *lists.tmac* relies
-heavily on the concept of stacks.  There are so many stacks being used, and as
-such, certain concepts from object-oriented programming in JavaScript have been
-implemented.  Since *lists.tmac* is written in pure 100% TROFF, all of that is
-written entirely from scratch in TROFF.
-
-With that said, *lists.tmac* literally has array-like capabilities, array
-objects with methods, and an array class.  You can derive it for your own use if
-you want.  All this is pushing TROFF implementations to their limits.  It got so
-complex that some features of *lists.tmac* had to be rejected as the TROFF
-compiler began to act in a weird manner when it clearly shouldn't.
-
 Compatibility
 =============
 *lists.tmac* is highly compatible with GNU TROFF (GROFF) version circa 1.22.2 or
@@ -85,33 +70,6 @@ download the PDF and view it with a good viewer.  I've been using Zathura_ to
 view PS and PDF and it renders Troff output quite nicely.
 
 .. _Zathura: https://pwmt.org/projects/zathura/
-
-FAQ
-===
-What is TROFF?  What is a macro package?  What is a TMAC?
----------------------------------------------------------
-
-TROFF
-  A typesetting program that is an ancestor of LaTeX.  It is a program that
-  reads lines of text from a text file and tries to put it nicely on paper.  The
-  result generally looks good.  For more information, see http://troff.org.
-
-Macro package
-  A macro package for TROFF is a collection of macros for TROFF.  Macros can do
-  many things to help you with typesetting your documents.  Macro packages are
-  simply bundles of those macros and are given nice names like *lists.tmac*.
-
-TMAC
-  TMAC (TROFF Macro) files are TROFF files that contain macros definitions for
-  TROFF.  TMAC files look like ``lists.tmac`` or ``me.tmac``.
-
-Make sure you know what TROFF is before trying to use *lists.tmac*.
-
-Will you make one for LaTeX?
----------------------------
-Well, I don't know how to LaTeX and LaTeX already has a facility for
-well-typeset lists, so it's highly unlikely I will be implementing this in
-LaTeX.
 
 Motivation
 ==========
@@ -256,3 +214,45 @@ permanently.
 License
 =======
 See `LICENSE <LICENSE>`_.
+
+FAQ
+===
+What is TROFF?  What is a macro package?  What is a TMAC?
+---------------------------------------------------------
+
+TROFF
+  A typesetting program that is an ancestor of LaTeX.  It is a program that
+  reads lines of text from a text file and tries to put it nicely on paper.  The
+  result generally looks good.  For more information, see http://troff.org.
+
+Macro package
+  A macro package for TROFF is a collection of macros for TROFF.  Macros can do
+  many things to help you with typesetting your documents.  Macro packages are
+  simply bundles of those macros and are given nice names like *lists.tmac*.
+
+TMAC
+  TMAC (TROFF Macro) files are TROFF files that contain macros definitions for
+  TROFF.  TMAC files look like ``lists.tmac`` or ``me.tmac``.
+
+Make sure you know what TROFF is before trying to use *lists.tmac*.
+
+Will you make one for LaTeX?
+---------------------------
+Well, I don't know how to LaTeX and LaTeX already has a facility for
+well-typeset lists, so it's highly unlikely I will be implementing this in
+LaTeX.
+
+What the fuck?!
+---------------
+Did you take a peek at ``stack.tmac`` and throw up?  Don't worry, you're not the
+only one.  The functionality, capability, and flexibility of *lists.tmac* relies
+heavily on the concept of stacks.  There are so many stacks being used, and as
+such, certain concepts from object-oriented programming in JavaScript have been
+implemented.  Since *lists.tmac* is written in pure 100% TROFF, all of that is
+written entirely from scratch in TROFF.
+
+With that said, *lists.tmac* literally has array-like capabilities, array
+objects with methods, and an array class.  You can derive it for your own use if
+you want.  All this is pushing TROFF implementations to their limits.  It got so
+complex that some features of *lists.tmac* had to be rejected as the TROFF
+compiler began to act in a weird manner when it clearly shouldn't.
