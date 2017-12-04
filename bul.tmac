@@ -1,0 +1,100 @@
+.ig
+    vim: noet sw=4 tw=80 wrap
+
+    bul.tmac	Macro definitions for bulleted lists
+
+    Stephanie Björk (Katt) <katt16777216@gmail.com>
+..
+.\" Necessary imports
+.so stack.tmac
+.
+.\" Default values (override by resetting these or parse arguments to requests)
+.\" Some registers like `ps' and `pi' are usually set by the -me macros.
+.nr bulorder.hsp 0.5c \"  Default relative indentation for an order of {b
+.nr bulorder.vsp 0.25v \" Default vertical spacing for an order of {b
+.nr bul.vsp 0.25v \"	  Default vertical spacing for each bullet point
+.nr bul.hsp 0.5n \" 	  Default margin between \*[bul.chr] and bullet point
+.ds bul.chr \(bu \" 	  Default bullet character
+.
+.if !\n(ps>0 .nr ps 4200 \" Default v. spacing for paragraphs for .bpp and .blp
+.if !\n(pi>0 .nr pi 25000 \" Default temporary indent for paragraphs for .bpp
+.
+.stack bulorder.hsps
+.stack bulorder.vsps
+.
+.\" Environment for bulleted lists
+.de {b
+.	\" Local default values
+.	nr _bulorder.hsp \\n[bulorder.hsp]u
+.	nr _bulorder.vsp \\n[bulorder.vsp]u
+.
+.	if \\n(.$>0 .nr _bulorder.hsp \\$1u
+.	if \\n(.$>1 .nr _bulorder.vsp \\$2u
+.
+.	bulorder.hsps.push \\n[_bulorder.hsp]u
+.	bulorder.vsps.push \\n[_bulorder.vsp]u
+.
+.	sp \\n[_bulorder.vsp]u
+.	in +\\n[_bulorder.hsp]u
+.
+.	rr _bulorder.hsp
+.	rr _bulorder.vsp
+..
+.
+.de }b
+.	if \\n[bulorder.hsps.c]>0 \{ \
+.		in -\\n[bulorder.hsps..\\n[bulorder.hsps.c]]u
+.		bulorder.hsps.pop
+.		sp \\n[bulorder.vsps..\\n[bulorder.vsps.c]]u
+.		bulorder.vsps.pop\
+\}
+..
+.\" The bullet point itself
+.de bb
+.	if \\n[bulorder.hsps.c]=0 .{b
+.
+.	\" Local default values
+.	ds _bul.chr \\*[bul.chr]
+.	nr _bul.hsp \\n[bul.hsp]u
+.	nr _bul.vsp \\n[bul.vsp]u
+.
+.	if \\n(.$>0 .ds _bul.chr \\$1
+.	if \\n(.$>1 .nr _bul.hsp \\$2u
+.	if \\n(.$>2 .nr _bul.vsp \\$3u
+.
+.	sp \\n[_bul.vsp]u
+.	ti -\w`\\*[_bul.chr]\h'+\\n[_bul.hsp]u'`u
+\\*[_bul.chr]\h'+\\n[_bul.hsp]u'\c
+.
+.	rr _bul.hsp
+.	rr _bul.vsp
+.	rm _bul.ldm
+.	rm _bul.chr
+.	rm _bul.rdm
+..
+.
+.\" Special requests used within a bulleted list environment
+.de bpp \" Temporarily indented paragraph
+.	\" Local default values
+.	nr _pi \\n(pi
+.	nr _ps \\n(ps
+.
+.	if \\n(.$>0 .nr _pi \\$1
+.	if \\n(.$>1 .nr _ps \\$2
+.
+.	sp \\n[_ps]u
+.	ti +\\n[_pi]u
+.
+.	rr _pi
+.	rr _ps
+..
+.de blp \" Left-justified, block-style paragraph
+.	\" Local default values
+.	nr _ps \\n(ps
+.
+.	if \\n(.$>0 .nr _ps \\$1
+.
+.	sp \\n[_ps]u
+.
+.	rr _ps
+..

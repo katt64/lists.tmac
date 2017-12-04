@@ -1,0 +1,13 @@
+.ig
+    vim: noet tw=80 wrap
+
+    lists.tmac	Wrapper for the entire macro package ``lists.tmac''
+
+    Stephanie Björk (Katt) <katt16777216@gmail.com>
+..
+.if !\n(.g \{ \
+.	tm FATAL (lists.tmac): Not compatible outside GNU TROFF.
+.	ex\
+\}
+.
+.so bul.tmac
