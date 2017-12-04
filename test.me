@@ -1,37 +1,68 @@
 .so lists.tmac
-.lp \" 0ems from origin.
-Okay, now, I've made my macro package for a bridge.
-Let's try it out.
-.{b 2m \" 2ems from origin.
-.bb
-Okay, this looks good.
-.bb
-Enforce it a little...
-.{b 2m \" 4ems from origin.
-.bb
-Okay, here's another block for my bridge.
-.{b 4m \" 8ems from origin.
-.bb
-Whoa!
-That was quite a big jump.
-.bb
-Let me make this stronger.
-It's just two more ems till I reach the other side!
-.{b 2m \" 10ems from origin.
-.bb
-OMG YES I DID IT!!
-.bb
-I've reached the other side, 10ems away from where I stood.
-.}b \" 8ems from origin.
-.bb
-I can go back...
-.}b \" 4ems from origin.
-.bb
-I can go back safely, without falling!
-.}b \" 2ems from origin.
-.bb
-Almost there!!
-.}b \" 0ems from origin.
 .lp
-Done!
-
+Maecenas lobortis, tellus vel gravida tincidunt, elit erat suscipit arcu, in
+varius erat risus vel magna. Fusce nec ante quis dolor vestibulum bibendum.
+Pellentesque sit amet urna.
+.{b \" Order 1
+.bb
+Ac augue. Nullam auctor lectus vitae arcu. Vestibulum porta justo placerat
+purus. Ut sem nunc, vestibulum nec, sodales vitae, vehicula eget, ipsum. Sed nec
+tortor. Aenean malesuada. Nunc convallis, massa eu vestibulum commodo, quam
+mauris interdum arcu, at pellentesque diam metus.
+.bb
+Hac habitasse platea dictumst. Nam dignissim nisi non mauris. Donec et
+tortor. Morbi felis. Donec aliquet, erat eu ultrices tincidunt, lorem mi
+sagittis lectus, ut feugiat pede lacus quis sapien. Suspendisse porta, felis a
+fermentum interdum, dui nisl sodales felis, ut.
+.blp
+Habitasse platea dictumst. Nam posuere ultricies turpis. Pellentesque a pede.
+Duis sed tortor. Phasellus egestas porta lectus. Aliquam dignissim consequat
+diam. Pellentesque pede.
+.{b 3c 3v \" Order 2: +3c relative indent and +3v vertical spacing.
+.bb
+Eu erat vel arcu tristique mattis. Nullam placerat lorem non augue. Cras et
+velit. Morbi sapien nulla, volutpat a, tristique eu, molestie ac, felis.
+.{b \" Order 3
+.bb
+Risus a nulla. Pellentesque sit amet arcu. In mattis laoreet enim. Pellentesque
+id augue et arcu blandit tincidunt. Pellentesque elit ante, rhoncus quis,
+dapibus sit amet, tincidunt eu, nibh. In imperdiet. Nunc lectus neque, commodo
+eget, porttitor quis, fringilla quis, purus.
+.bb
+Purus a lorem. Etiam in massa. Nam ut metus. In rhoncus venenatis tellus. Etiam
+aliquam. Ut aliquam lectus ut lectus. Nam turpis lacus, tristique sit amet,
+convallis sollicitudin, commodo a, purus. Nulla vitae eros a diam blandit
+mollis. Proin luctus feugiat eros. Pellentesque habitant morbi tristique
+senectus et netus et malesuada.
+.}b \" End order 3
+.bb
+Hmm...
+.{b \" Order 3
+.bb \(pl
+Suspendisse sit amet tellus non odio porta pellentesque. Nulla facilisi. Integer
+iaculis condimentum augue. Nullam urna nulla, vestibulum.
+.bb \(mi
+Commodo a, purus. Nulla vitae eros a diam blandit mollis. Proin luctus feugiat
+eros. Pellentesque habitant morbi tristique senectus et netus.
+.bb \(mu
+Pretium vitae, feugiat ac, quam. Etiam sed tellus vel est ultrices condimentum.
+Vestibulum euismod. Vivamus blandit. Pellentesque eu urna. Vestibulum consequat.
+.bb \(di
+Porta. Proin ligula. Aenean nunc massa, dapibus quis, imperdiet id, commodo a,
+lacus. Cras sit amet erat et nulla varius aliquet.
+.}b \" End order 3
+.bb
+Suscipit tempus. Proin pulvinar velit sed nulla.
+Curabitur aliquet leo ac massa. Praesent posuere lectus vitae odio. Donec
+imperdiet urna vel ante. In semper accumsan diam. Vestibulum porta justo.
+Suspendisse egestas commodo eros.
+.}b \" End order 2
+.bb
+Faucibus tempor, lorem dolor mollis turpis, a consectetuer nunc justo ac nisl.
+Nam vitae purus. Cum sociis natoque penatibus et magnis dis parturient montes,
+nascetur ridiculus mus. Praesent semper magna. In eu justo. Nunc vitae risus nec
+sem scelerisque consequat. In hac.
+.}b \" End order 1
+.lp
+Velit, ullamcorper ac, fringilla vitae, sodales nec, purus. Morbi aliquet risus
+in mi.
