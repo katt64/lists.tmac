@@ -24,6 +24,26 @@ Given these goals, *lists.tmac* currently fulfills everyone of them, all
 *except* for the facilities to typeset totally ordered lists, which is a
 challenging endeavour.
 
+*lists.tmac* can do nested orders of lists and it can do it quite well.  For
+each nested order, you can define custom indentations virtually unpredictably
+and *lists.tmac* will remember how much your indentation for each and every
+nested order was, so that it can exdent (opposite of indent) by that precise
+amount correctly whensoever you need to exit from a nested order.
+
+*lists.tmac* can also remember the amount of vertical spacing introduced by each
+entry of a nested order.  Likewise, you can define custom vertical spacings
+virtually unpredictably and *lists.tmac* will remember how much it was for each
+and every nested order.  So, when you need to exit from the nested order, the
+same amount of vertical spacing will be given after it.
+
+Further practical customization features include the ability to customize the
+character used as bullet points.  It is possible to use EQN's equations and even
+emojis as bullet points!
+
+The macros try to integrate very well with the *-me* macros, so they will work
+alongside them very seamlessly.  Thus, it can practically serve as an extension
+to existing macros like *-me*.
+
 Compatibility
 =============
 *lists.tmac* is highly compatible with GNU TROFF (GROFF) version circa 1.22.2 or
@@ -256,3 +276,5 @@ objects with methods, and an array class.  You can derive it for your own use if
 you want.  All this is pushing TROFF implementations to their limits.  It got so
 complex that some features of *lists.tmac* had to be rejected as the TROFF
 compiler began to act in a weird manner when it clearly shouldn't.
+
+It is stable now, though.
