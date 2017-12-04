@@ -66,7 +66,7 @@ how the macro package works, then you may need a bit of experience, obviously.
 Installation
 ============
 Copy ``*.tmac`` within this repository to your ``site-tmac`` directory, which
-should be in ``/usr/share/{,local}/groff/site-tmac`` for GROFF installations.
+should be ``/usr/share/{,local}/groff/site-tmac`` for GROFF installations.
 
 Usage
 =====
