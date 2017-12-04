@@ -248,4 +248,4 @@ permanently.
 
 License
 =======
-See `LICENSE <LICENSE>`.
+See `LICENSE <LICENSE>`_.
