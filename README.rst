@@ -79,6 +79,13 @@ your document:
 If you prefer to learn by examples (which are inherently incomplete), refer to
 `test.pdf <test.pdf>`_ or see the examples in `Motivation`_.
 
+By the way, if you are viewing `test.pdf <test.pdf>`_ from within Github, you
+might **not** see bullet points for each item even though they are there.  Just
+download the PDF and view it with a good viewer.  I've been using Zathura_ to
+view PS and PDF and it renders Troff output quite nicely.
+
+.. _Zathura: https://pwmt.org/projects/zathura/
+
 FAQ
 ===
 What is TROFF?  What is a macro package?  What is a TMAC?
