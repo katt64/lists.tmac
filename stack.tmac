@@ -2,42 +2,8 @@
     vim: noet sw=4 tw=80 wrap
 
     stack.tmac	A very minimalistic stack implementation
-
-    This stack implementation starts out as a ``class.''  It cannot be used
-    alone; it must be used to create a new instance of itself which will then
-    function as a fully-operable stack.
-
-    Compare a pseudo-implementation in JavaScript with this one in TROFF:
-
-    JavaScript:				TROFF:
-
-	/* Create new stack instance */     .\" Create new stack instance
-	let myStack = new Stack();          .stack myStack
-	
-	/* No. of items in stack = 0 */     .\" No. of items in stack = 0
-	console.log(myStack.length);        .tm \n[myStack.c]
-
-	/* Push value of x to stack */      .\" Push value of x to stack
-	const x = 64;                       .nr x 64
-	myStack.push(x);                    .myStack.push \nx
-
-	/* Pop and print */                 .\" Pop and print (or vice versa)
-	console.log(myStack.pop());         .tm \n[myStack..\n[myStack.c]]
-	                                    .myStack.pop
-
-    As you can see, it kinda works!  In TROFF, the ``pop`` method for instances
-    of ``stack`` won't return a value, and printing the top of any stack won't
-    automatically pop it.  So, the usual pop-'n-use is a 2-step process.
-    Remember to use the value before you pop, as the ``pop`` method quietly
-    devastates the top item of the stack, so you won't have anything to use.
-
-    By the way, you can eradicate all items in the stack ``myStack`` with
-    ``.myStack.clr``.
-    You can also eradicate an instance ``myStack`` with ``.stack.rm myStack``.
-
-	-- Stephanie Björk (December 4, 2017)
 ..
-.de stack
+.de stack \" Stacks for integers
 \\.nr \\$1.c 0 1
 \\.de \\$1.push
 \\.	nr \\$1..\\\\n+[\\$1.c] \\\\$1
@@ -45,6 +11,23 @@
 \\.de \\$1.pop
 \\.	if \\\\n[\\$1.c]>0 \\{ \
 \\.		rr \\$1..\\\\n[\\$1.c]
+\\.		nr \\$1.c -1\
+\\\\}
+\\..
+\\.de \\$1.clr
+\\.	while \\\\n[\\$1.c]>0 \\{ \
+\\.		\\$1.pop\
+\\\\}
+\\..
+..
+.de strstack \" Stacks for strings (Steffen Nurpmeso)
+\\.nr \\$1.c 0 1
+\\.de \\$1.push
+\\.	ds \\$1..\\\\n+[\\$1.c] \\\\$1
+\\..
+\\.de \\$1.pop
+\\.	if \\\\n[\\$1.c]>0 \\{ \
+\\.		rm \\$1..\\\\n[\\$1.c]
 \\.		nr \\$1.c -1\
 \\\\}
 \\..
