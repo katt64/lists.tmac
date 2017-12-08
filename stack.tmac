@@ -3,39 +3,41 @@
 
     stack.tmac	A very minimalistic stack implementation
 ..
+.de end
+..
 .de stack \" Stacks for integers
-\\.nr \\$1.c 0 1
-\\.de \\$1.push
-\\.	nr \\$1..\\\\n+[\\$1.c] \\\\$1
-\\..
-\\.de \\$1.pop
-\\.	if \\\\n[\\$1.c]>0 \\{ \
-\\.		rr \\$1..\\\\n[\\$1.c]
-\\.		nr \\$1.c -1\
-\\\\}
-\\..
-\\.de \\$1.clr
-\\.	while \\\\n[\\$1.c]>0 \\{ \
-\\.		\\$1.pop\
-\\\\}
-\\..
+.	nr \\$1.c 0 1
+.	de \\$1.push end
+.		nr \\$1..\\\\n+[\\$1.c] \\\\$1
+.	end
+.	de \\$1.pop end
+.		if \\\\n[\\$1.c]>0 \{ \
+.			rr \\$1..\\\\n[\\$1.c]
+.			nr \\$1.c -1\
+.		\}
+.	end
+.	de \\$1.clr end
+.		while \\\\n[\\$1.c]>0 \{ \
+.			\\$1.pop\
+.		\}
+.	end
 ..
 .de strstack \" Stacks for strings (Steffen Nurpmeso)
-\\.nr \\$1.c 0 1
-\\.de \\$1.push
-\\.	ds \\$1..\\\\n+[\\$1.c] \\\\$1
-\\..
-\\.de \\$1.pop
-\\.	if \\\\n[\\$1.c]>0 \\{ \
-\\.		rm \\$1..\\\\n[\\$1.c]
-\\.		nr \\$1.c -1\
-\\\\}
-\\..
-\\.de \\$1.clr
-\\.	while \\\\n[\\$1.c]>0 \\{ \
-\\.		\\$1.pop\
-\\\\}
-\\..
+.	nr \\$1.c 0 1
+.	de \\$1.push end
+.		ds \\$1..\\\\n+[\\$1.c] \\\\$1
+.	end
+.	de \\$1.pop end
+.		if \\\\n[\\$1.c]>0 \{ \
+.			rm \\$1..\\\\n[\\$1.c]
+.			nr \\$1.c -1\
+.		\}
+.	end
+.	de \\$1.clr end
+.		while \\\\n[\\$1.c]>0 \{ \
+.			\\$1.pop\
+.		\}
+.	end
 ..
 .de stack.rm
 .	\\$1.clr
