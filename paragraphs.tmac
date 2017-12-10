@@ -1,0 +1,34 @@
+.ig
+    paragraphs.tmac	Special paragraphs within list environments
+
+    Stephanie Björk (Katt) <katt16777216@gmail.com>
+..
+.\" Default values which can be customized later.
+.\" Registers like `ps' and `pi' are usually set by the -me macros.
+.if !\n(ps .nr ps 4200 \" Default v. spacing for paragraphs for .lpp and .llp
+.if !\n(pi .nr pi 25000 \" Default temporary indent for paragraphs for .lpp
+.
+.de lpp \" Temporarily indented paragraph
+.	\" Local default values
+.	nr _pi \\n(pi
+.	nr _ps \\n(ps
+.
+.	if \\n(.$>0 .nr _pi \\$1
+.	if \\n(.$>1 .nr _ps \\$2
+.
+.	sp \\n[_ps]u
+.	ti +\\n[_pi]u
+.
+.	rr _pi
+.	rr _ps
+..
+.de llp \" Left-justified, block-style paragraph
+.	\" Local default values
+.	nr _ps \\n(ps
+.
+.	if \\n(.$>0 .nr _ps \\$1
+.
+.	sp \\n[_ps]u
+.
+.	rr _ps
+..
