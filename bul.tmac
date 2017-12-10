@@ -8,30 +8,35 @@
 .\" Default values (override by resetting these or parse arguments to requests)
 .nr bulorder.hsp 0.5c \"  Default relative indentation for an order of {b
 .nr bulorder.vsp 0.25v \" Default vertical spacing for an order of {b
+.ds bulorder.chr "\(bu \"  Default bullet character all items in {b
 .nr bul.vsp 0.25v \"	  Default vertical spacing for each bullet point
 .nr bul.hsp 0.5n \" 	  Default margin between \*[bul.chr] and bullet point
-.ds bul.chr \(bu \" 	  Default bullet character
 .
 .array bulorder.hsps
 .array bulorder.vsps
+.strarray bulorder.chrs
 .
 .\" Environment for bulleted lists
 .de {b
 .	\" Local default values
+.	ds _bulorder.chr \\*[bulorder.chr]
 .	nr _bulorder.hsp \\n[bulorder.hsp]u
 .	nr _bulorder.vsp \\n[bulorder.vsp]u
 .
-.	if \\n(.$>0 .nr _bulorder.hsp \\$1u
-.	if \\n(.$>1 .nr _bulorder.vsp \\$2u
+.	if \\n(.$>0 .ds _bulorder.chr \\$1
+.	if \\n(.$>1 .nr _bulorder.hsp \\$2u
+.	if \\n(.$>2 .nr _bulorder.vsp \\$3u
 .
 .	bulorder.hsps.push \\n[_bulorder.hsp]u
 .	bulorder.vsps.push \\n[_bulorder.vsp]u
+.	bulorder.chrs.push \\*[_bulorder.chr]
 .
 .	sp \\n[_bulorder.vsp]u
 .	in +\\n[_bulorder.hsp]u
 .
 .	rr _bulorder.hsp
 .	rr _bulorder.vsp
+.	rm _bulorder.chr
 ..
 .
 .de }b
@@ -40,6 +45,7 @@
 .		bulorder.hsps.pop
 .		sp \\n[bulorder.vsps..\\n[bulorder.vsps.c]]u
 .		bulorder.vsps.pop
+.		bulorder.chrs.pop
 .\}
 ..
 .\" The bullet point itself
@@ -47,7 +53,7 @@
 .	if \\n[bulorder.hsps.c]=0 .{b
 .
 .	\" Local default values
-.	ds _bul.chr \\*[bul.chr]
+.	ds _bul.chr \\*[bulorder.chrs..\\n[bulorder.chrs.c]]
 .	nr _bul.hsp \\n[bul.hsp]u
 .	nr _bul.vsp \\n[bul.vsp]u
 .

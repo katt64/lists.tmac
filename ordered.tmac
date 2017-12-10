@@ -1,5 +1,5 @@
 .ig
-    vim: noet tw=80 wrap
+    vim: sw=4 noet tw=80 wrap
 
     ordered.tmac	Macros for totally ordered lists
 
@@ -8,16 +8,21 @@
 .\" Default values (override by resetting these or parse arguments to requests)
 .nr tolorder.hsp 0.5c \"  Default relative indentation for an order of {o
 .nr tolorder.vsp 0.25v \" Default vertical spacing for an order of {o
+.nr tolorder.depth 1 \"   Default initial depth to start at for any order
+.nr tolorder.depth.hsp \n[tolorder.hsp] \" Default indentation per each depth-1
 .ds tolorder.toset 1 \"   Default totally ordered set for one nested order
 .ds tolorder.delim . \"   Default delimiter for each depth of a list item
 .nr oli.vsp 0.25v \"	  Default vertical spacing for each list item
 .nr oli.hsp 0.5n \" 	  Default margin between list number and text
 .
-.\" Variables
-.nr oli.depth 1
-.
+.\" Again, I must thank James Clark, Werner Lemberg, and Ted Harding for such a
+.\" stable and patient typesetting software -- Groff.  Without their efforts,
+.\" the following 7 lines could not have existed.
 .array tolorder.hsps
 .array tolorder.vsps
+.array tolorder.rootinds
+.array tolorder.depths
+.array tolorder.depth.hsps
 .strarray tolorder.tosets
 .strarray tolorder.delims
 .
@@ -26,31 +31,47 @@
 .	\" Local default values
 .	nr _tolorder.hsp \\n[tolorder.hsp]u
 .	nr _tolorder.vsp \\n[tolorder.vsp]u
+.	nr _tolorder.depth.hsp \\n[toloder.depth.hsp]u
+.	nr _tolorder.depth \\n[tolorder.depth]
 .	ds _tolorder.toset \\*[tolorder.toset]
 .	ds _tolorder.delim \\*[tolorder.delim]
 .
 .	if \\n(.$>0 .ds _tolorder.toset \\$1
 .	if \\n(.$>1 .ds _tolorder.delim \\$2
-.	if \\n(.$>2 .nr _tolorder.hsp \\$3u
-.	if \\n(.$>3 .nr _tolorder.vsp \\$4u
+.	if \\n(.$>2 .nr _tolorder.depth \\$3
+.	if \\n(.$>3 .nr _tolorder.depth.hsp \\$4u
+.	if \\n(.$>4 .nr _tolorder.hsp \\$5u
+.	if \\n(.$>5 .nr _tolorder.vsp \\$6u
 .
 .	tolorder.hsps.push \\n[_tolorder.hsp]u
 .	tolorder.vsps.push \\n[_tolorder.vsp]u
+.	tolorder.depth.hsps.push \\n[_tolorder.depth.hsp]u
 .	tolorder.tosets.push \\*[_tolorder.toset]
 .	tolorder.delims.push \\*[_tolorder.delim]
+.	tolorder.depths.push \\n[_tolorder.depth]
 .
 .	array tolorder.\\n[tolorder.hsps.c]
 .
 .	sp \\n[_tolorder.vsp]u
 .	in +\\n[_tolorder.hsp]u
 .
+.	tolorder.rootinds.push \\n(.i
+.
 .	rr _tolorder.hsp
 .	rr _tolorder.vsp
+.	rr _tolorder.depth.hsp
+.	rr _tolorder.depth
+.	rm _tolorder.toset
+.	rm _tolorder.delim
 ..
 .
 .de }o
 .	if \\n[tolorder.hsps.c]>0 \{ \
 .		array.rm tolorder.\\n[tolorder.hsps.c]
+.
+.		nr compensate \\n(.i-\\n[tolorder.rootinds..\\n[tolorder.rootinds.c]]
+.		in -\\n[compensate]u
+.		rr compensate
 .
 .		in -\\n[tolorder.hsps..\\n[tolorder.hsps.c]]u
 .		sp \\n[tolorder.vsps..\\n[tolorder.vsps.c]]u
@@ -59,34 +80,44 @@
 .		tolorder.delims.pop
 .		tolorder.hsps.pop
 .		tolorder.vsps.pop
+.		tolorder.rootinds.pop
+.		tolorder.depth.hsps.pop
+.		tolorder.depths.pop
 .	\}
 ..
-.
-.de li \" (depth)? (toset)? (delim)? (hsp)? (vsp)?
+.\" Totally ordered list items themselves
+.de oo
 .	if \\n[tolorder.hsps.c]=0 .{o
 .
 .	\" Local default values
-.	nr _oli.depth \\n[oli.depth]u
+.	nr _oli.depth \\n[tolorder.depths..\\n[tolorder.depths.c]]
 .	nr _oli.hsp \\n[oli.hsp]u
+.	nr _oli.depth.hsp \\n[tolorder.depth.hsp]u
 .	nr _oli.vsp \\n[oli.vsp]u
-.	ds _oli.delim \\*[tolorder.delims..\\n[tolorder.hsps.c]]
-.	ds _oli.toset \\*[tolorder.tosets..\\n[tolorder.hsps.c]]
+.	ds _oli.delim \\*[tolorder.delims..\\n[tolorder.delims.c]]
+.	ds _oli.toset \\*[tolorder.tosets..\\n[tolorder.tosets.c]]
 .
-.	if \\n(.$>0 .nr _oli.depth \\$1 \" Future
+.	if \\n(.$>0 .nr _oli.depth \\$1
 .	if \\n(.$>1 .ds _oli.toset \\$2
 .	if \\n(.$>2 .ds _oli.delim \\$3
-.	if \\n(.$>3 .nr _oli.hsp \\$4
-.	if \\n(.$>4 .nr _oli.vsp \\$5
+.	if \\n(.$>3 .nr _oli.depth.hsp \\$4
+.	if \\n(.$>4 .nr _oli.hsp \\$5
+.	if \\n(.$>5 .nr _oli.vsp \\$6
 .
-.	nr oli.depth \\n[_oli.depth]
+.	if \\n[_oli.depth]<=0 .nr _oli.depth 1
+.	nr tolorder.depths..\\n[tolorder.depths.c] \\n[_oli.depth]
 .
-.	\" The macros can only have 1 depth right now.
-.	\" Stephanie needs support <3 :p
-.	ie \\n[tolorder.\\n[tolorder.hsps.c].c]>0 \{ \
-.		nr tolorder.\\n[tolorder.hsps.c]..1 +1
+.	if \\n[tolorder.\\n[tolorder.hsps.c].c]>=\\n[_oli.depth] \{ \
+.		nr tolorder.\\n[tolorder.hsps.c]..\\n[_oli.depth] +1
 .	\}
-.	el .tolorder.\\n[tolorder.hsps.c].push 1
-.
+.	while \\n[tolorder.\\n[tolorder.hsps.c].c]<\\n[_oli.depth] \{ \
+.		tolorder.\\n[tolorder.hsps.c].push 1
+.		in +\\n[_oli.depth.hsp]u
+.	\}
+.	while \\n[tolorder.\\n[tolorder.hsps.c].c]>\\n[_oli.depth] \{ \
+.		tolorder.\\n[tolorder.hsps.c].pop
+.		in -\\n[_oli.depth.hsp]u
+.	\}
 .
 .	nr i 0 1
 .	while \\n+i<=\\n[tolorder.\\n[tolorder.hsps.c].c] \{ \
@@ -105,6 +136,25 @@
 .	rm _oli.delim
 .	rm _oli.toset
 .	rr _oli.depth
+.	rr _oli.depth.hsp
 .	rr _oli.hsp
 .	rr _oli.vsp
+..
+.\" Miscellaneous
+.nr rnl.rd 0
+.de rnl
+.	nr rnl.rd +1
+.	if \\n[rnl.rd]<=\\n[tolorder.\\n[tolorder.hsps.c].c] \{ \
+.		if !'\\$1'-' \{ \
+.			nr n \\$1-1
+.			nr tolorder.\\n[tolorder.hsps.c]..\\n[rnl.rd] \\nn
+.			rr n
+.		\}
+.
+.		ie \\n(.$>1 \{ \
+.			shift
+.			rnl \\$@
+.		\}
+.		el .nr rnl.rd 0
+.	\}
 ..

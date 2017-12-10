@@ -36,6 +36,11 @@ virtually unpredictably and *lists.tmac* will remember how much it was for each
 and every nested order.  So, when you need to exit from the nested order, the
 same amount of vertical spacing will be given after it.
 
+By the way, *lists.tmac* can typeset **infinitely many** nested orders and it
+will still remember them the indentations for them.  Practically, though, you
+are likely to run out of paper space thanks to all those indentations before
+your computer runs out of memory!
+
 Further practical customization features include the ability to customize the
 character used as bullet points.  It is possible to use EQN's equations and even
 emojis as bullet points!
@@ -47,15 +52,17 @@ to existing macros like *-me*.
 Compatibility
 =============
 *lists.tmac* is highly compatible with GNU TROFF (GROFF) version circa 1.22.2 or
-newer.  It is a really unlikely that it will work with other implementations of
-TROFF, especially classical AT&T TROFF.  Given the ubiquity of GNU TROFF and the
-fact that nobody uses AT&T TROFF anymore, this should not be too much of a
-problem.
+newer.  Pierre-Jean pointed out that it also works with Heirloom TROFF
+flawlessly.  It is a really unlikely that it will work with other
+implementations of TROFF than mentioned, especially classical AT&T TROFF.  Given
+the ubiquity of GNU/Heirloom TROFF and the fact that nobody uses AT&T TROFF
+anymore, this should not be too much of a problem.
 
 To prevent misuse, *lists.tmac* reacts nastily if it realizes that it is not
-being run in GNU TROFF.  It prints an error message labelled \``FATAL'' and ends
-all text processing abruptly.  That's nasty!  If you want to override its
-fail-safe, run ``.nr .g 1`` before you source *lists.tmac* into your document.
+being run in GNU/Hierloom TROFF.  It prints an error message labelled \``FATAL''
+and ends all text processing abruptly.  That's nasty!  If you want to override
+its fail-safe, run ``.nr .g 1`` before you source *lists.tmac* into your
+document.
 
 As for the macro package's compatibility with the user, i.e. the prerequisites
 demanded from you, then it isn't much.  You need only know how to use one of the
