@@ -146,7 +146,8 @@
 .	nr rnl.rd +1
 .	if \\n[rnl.rd]<=\\n[tolorder.\\n[tolorder.hsps.c].c] \{ \
 .		if !'\\$1'-' \{ \
-.			nr n \\$1-1
+.			ie \\n[rnl.rd]=\\n[tolorder.\\n[tolorder.hsps.c].c] .nr n \\$1-1
+.			el .nr n \\$1
 .			nr tolorder.\\n[tolorder.hsps.c]..\\n[rnl.rd] \\nn
 .			rr n
 .		\}
