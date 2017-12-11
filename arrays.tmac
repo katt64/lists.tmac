@@ -99,7 +99,7 @@
 .de array.rm
 .	\\$1.clr
 .
-.	\" sed -rn "s/^\.\s?de (.+) end/.\trm \1/p" %
+.	\" :r !./array.rm.sed %
 .	rm \\$1.push
 .	rm \\$1.pushln
 .	rm \\$1.pop
