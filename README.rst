@@ -9,8 +9,9 @@ Introduction 👋
 ===============
 *lists.tmac* provides facilities to typeset exceptionally beautiful lists within
 modern implementations of Troff.  It integrates very well with the existing
-*-me* macro package.  In this article, all occurences of the word "infinite,"
-"infinitely," and "infinity" are metaphoric.
+*-me* macro package and aims to do one thing and do it well -- lists.  In this
+article, all occurences of the word "infinite," "infinitely," and "infinity" are
+metaphoric.
 
 *lists.tmac* currently provides lists of the following types: bulleted (i.e.
 unordered) or lexicographically-ordered (i.e. totally ordered).  Each of these
@@ -49,11 +50,11 @@ and popular implementations of Troff, such as GNU Troff and Heirloom Troff.
 
 Nonetheless, a `manual <manual.me>`_ is provided, which describes the macro
 package formally, and details the prerequisites, compatibilities, usage, and
-caveats.  Generally speaking, good software comes with good documentation, so
+caveats.  It also showcases some of the best things *list.tmac* can provide --
+lists!  Generally speaking, good software comes with good documentation, so
 the documentation aims to be very good and detailed.  Many of the points stated
 here will be stated again in equal or greater verbosity within the typeset
 manual.  You should definitely check that manual out!
-
 
 Interested? 😊
 ==============
@@ -70,6 +71,134 @@ I'll let you compile it by yourself so as to see how interested you are in this.
 :p  Haha, just kidding...  Doesn't it feel great to compile things yourself,
 though?
 
+An example
+==========
+The following is a very simple example of a common listing application this
+macro package can help with.  This section is divided into three subsections: an
+example in reStructuredText (from which inspiration for *lists.tmac* took
+place), an example of the output in Troff, and the Troff source code that uses
+*lists.tmac* for those lists.
+
+In reStructuredText
+-------------------
+Introduction
+~~~~~~~~~~~~
+Tortilla  Española  or  Spanish  Omelette  is a kind of
+omellete dish that features lots of onions or garlic,  eggs,
+and potatoes in a delicious combination.  It is fried in oil
+and served as a starter.  The dish is very popular in  Spain
+and other Hispanic countries incl. parts of Latin America.
+
+Ingredients
+~~~~~~~~~~~
+Serves 4 people
+
+- 4 eggs.  Some points to note:
+
+  - Chicken eggs only.
+  - Eggs must be less than 14 days old.
+
+- 2 cloves of onions, sliced finely
+
+- 50 grams of salt
+
+- 1kg thinly‐sliced potatoes
+
+Instructions
+~~~~~~~~~~~~
+1. Pour “some” oil onto the pan with the stove on low heat.
+
+2. While  waiting,  scramble the raw eggs in a bowl of some
+   kind.  Once done,
+
+   2.1. Put all the onions in.
+
+   2.2. Put all the salt in.
+
+3. The oil should now be heated enough.  Put all the  potatoes
+   in and stir until they turn golden.  Some points to
+   remember:
+
+   1. Do not stir them too hard.
+
+   2. Always use low heat.
+
+4. Once the potatoes are golden, pour the entire egg batter
+   in.
+
+5. Wait  until	 the  raw  eggs	 cook,	which should take no
+   longer than 10 minutes.  Then, serve!
+
+In Troff
+--------
+
+.. image:: docs/images/ex1-troff.png
+   :alt: An example of lists using lists.tmac in Troff.
+   :width: 90%
+
+Source file in Troff
+~~~~~~~~~~~~~~~~~~~~
+.. code:: nroff
+
+  .mso lists.tmac
+  .uh Introduction
+  .pp
+  .i "Tortilla Española"
+  or
+  .i "Spanish Omelette"
+  is a kind of omellete dish that features lots of onions or garlic, eggs, and
+  potatoes in a delicious combination.
+  It is fried in oil and served as a starter.
+  The dish is very popular in Spain and other Hispanic countries incl. parts of
+  Latin America.
+  .uh Ingredients
+  .lp
+  Serves 4 people:
+  .{b
+  .bb
+  4 eggs.
+  Some points to note:
+  .{b
+  .bb
+  Chicken eggs only.
+  .bb
+  Eggs must be less than 14 days old.
+  .}b
+  .bb
+  2 cloves of onions, sliced finely
+  .bb
+  50 grams of salt
+  .bb
+  1kg thinly-sliced potatoes
+  .}b
+  .uh Instructions
+  .{o
+  .oo
+  Pour \*(lqsome\*(rq oil onto the pan with the stove on low heat.
+  .oo
+  While waiting, scramble the raw eggs in a bowl of some kind.
+  Once done,
+  .oo 2
+  Put all the onions in.
+  .oo
+  Put all the salt in.
+  .oo 1
+  The oil should now be heated enough.
+  Put all the potatoes in and stir until they turn golden.
+  Some points to remember:
+  .{o
+  .oo
+  Do not stir them too hard.
+  .oo
+  Always use low heat.
+  .}o
+  .oo
+  Once the potatoes are golden, pour the entire egg batter in.
+  .oo
+  Wait until the raw eggs cook, which should take no longer than 10 minutes.
+  Then, serve!
+  .}o
+
 Bugs 🐛
 =======
 There are currently no known bugs within the macro package.  However, if there
@@ -83,7 +212,7 @@ be detailed enough such that the maintainers know what exactly is going on.
 Therefore, it is generally recommended to include the following things in your
 bug report in the following order:
 
-1. The abstract problem you are facing.  For example:
+1. The abstract of the problem you are facing.  For example:
   
     Bulleted lists are suddenly not nesting properly after 37 nested orders on
     the 2nd and 3rd items of the list.
@@ -123,9 +252,9 @@ bug report in the following order:
     .bb
     This is nesting well.
 
-  You may be asked to put the two lines (``.nr trace-full`` and ``.mso
-  trace.tmac``) **before** the line to source the macro package (``.so
-  lists.tmac``).  If that's the case, you may want to do that.
+   You may be asked to put the two lines (``.nr trace-full 1`` and ``.mso
+   trace.tmac``) **before** the line to source the macro package (``.so
+   lists.tmac``).  If that's the case, you may want to do that.
 
 4. The name and version of your Troff compiler, and related environment factors
    such as fonts, font sizes, page sizes, even the operating system, &c.  This
