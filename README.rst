@@ -84,7 +84,7 @@ In reStructuredText
 Introduction
 ~~~~~~~~~~~~
 Tortilla  Española  or  Spanish  Omelette  is a kind of
-omellete dish that features lots of onions or garlic,  eggs,
+omelette dish that features lots of onions or garlic,  eggs,
 and potatoes in a delicious combination.  It is fried in oil
 and served as a starter.  The dish is very popular in  Spain
 and other Hispanic countries incl. parts of Latin America.
@@ -146,7 +146,7 @@ Source file in Troff
   .i "Tortilla Española"
   or
   .i "Spanish Omelette"
-  is a kind of omellete dish that features lots of onions or garlic, eggs, and
+  is a kind of omelette dish that features lots of onions or garlic, eggs, and
   potatoes in a delicious combination.
   It is fried in oil and served as a starter.
   The dish is very popular in Spain and other Hispanic countries incl. parts of
@@ -186,7 +186,7 @@ Source file in Troff
   The oil should now be heated enough.
   Put all the potatoes in and stir until they turn golden.
   Some points to remember:
-  .{o
+  .{o i
   .oo
   Do not stir them too hard.
   .oo
