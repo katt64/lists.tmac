@@ -1,0 +1,924 @@
+.ig
+    vim: noet tw=80 wrap
+
+    manual.me	User's manual for ``lists.tmac``
+
+    Stephanie Björk (Katt) <katt16777216@gmail.com>
+..
+.so lists.tmac
+.de CBEGIN
+.	(l
+.	ft C
+..
+.de CEND
+.	ft
+.	)l
+..
+.am $c
+.	nr $1 0
+..
+.EQ
+define forth 'size -4 {1 over 4}'
+delim $$
+.EN
+.he ''%''
+.fo ''katt64/lists.tmac''
+.tp
+.fam RLWA
+.sp |4.2i
+.ps 36
+lists.tmac
+
+.ad r
+.sp |4.2i
+.ps 24
+Macros for lists
+
+.ad l
+.sp 2
+.ps 20
+.ce
+Stephanie Björk\**
+.(f
+\**
+Author's current email address:
+.i katt16777216@gmail.com .
+Current Snapchat username:
+.i suttiwit .
+.)f
+
+.sp |8i
+.sz 14
+.ad r
+Written on December 6, 2017
+.br
+Typeset on \*(td
+
+.ad l
+.\" Begin document
+.sz 10
+.fam MRW
+.++ AB
+.+c Abstract
+.pp
+This manual serves as a comprehensive documentation for the macro package.
+It details every detail and subtlety within the macro as well as point of
+practicalities on how each feature can be used.
+Details focus on the usage of the macros and its implications to the writer, as
+well as some detail on how exactly each macro does its job.
+.pp
+Be that as it may, the best documentation is believed to be the Troff source
+code itself (\fC*.tmac\fP).
+The code is quite well-written and self-documented with inline/display comments
+interspersed as needs be.
+.pp
+All lists within this manual is typeset using
+.bi lists.tmac
+itself, ergo serving as an example of its output.
+Other textual content is handled using the \fI-me\fP macros on
+.sm TROFF .
+.+c "About the macro package"
+.pp
+.bi lists.tmac
+is a macro package that facilitates the typesetting of exceptionally beautiful
+lists within Troff.
+The entire package is free and open-source and is written in 100% pure Troff;
+its source code and project base can be found on Github\*#
+.(d
+\*#
+.ul
+katt64/lists.tmac
+on Github
+.br
+(https://github.com/katt64/lists.tmac)
+.)d
+.pp
+It aims to do one thing and do it very well: lists.
+Everything has been made to work well and look good, from the source code up to
+the documentation; it must even be fun to use for the writer as well.
+.pp
+.bi lists.tmac
+extends the capabilities of builtin bulleted list macro(s) provided by many
+classical macro packages, such as the \fI-me\fP macros, by giving the writer
+full control over the setting of lists, providing means for infinitely many
+nested orders of lists each of which can be customized individually, and a few
+more fancy strings and cieling waxes.
+It provides all this whilst also giving convenience by automating things
+where possible and also correct itself out of some basic errors.
+Thus, the typeset output should generally be desirable for most cases without
+any customization required, although customization should be feasible.
+.pp
+Furthermore, it tries to blend in and play nice with the classical macros,
+especially with the \fI-me\fP macros.
+Therefore, when writing prose in \fI-me\fP, the requests for
+.bi lists.tmac
+should look good within the source file alongside the existing requests
+\fI-me\fP provides.
+This (un)fortunately means that general requests are designed to be very terse.
+To allow for some breathing room and take advantage of what the 21\*{st\*}
+century brings, such requests are not as terse as \fI-me\fP's macros, as some of
+them are 3-4 characters long, excluding the beginning dot.
+Since the macro package only provides listing capabilities, it is not intended
+to replace existing \fI/-m.+/\fP macros, not least but to be used alongside
+them.
+.pp
+If you do not require fancy lists within your document, you should keep it
+simple and you should not require
+.bi lists.tmac .
+However, during those times that complex lists need be catered for, it is also
+easy to get started and get your first lists printed beautifully, or however you
+want it.
+For an example of
+.bi lists.tmac 's
+output, refer to the relevant chapters for each type of list it can provide.
+.pp
+As the author who imagined this macro, I would like to thank you for having the
+courage to try and use this macro package and even for reporting issues and
+making suggestions for new features.
+I hope you love this macro package, because I've loved every step of the way in
+writing it to this point.
+So, I hope it serves you well in all your writing adventures.
+.pp
+I'd like to also thank many generous people who have been by my side during the
+development of
+.bi lists.tmac .
+To be more specific, I would like to thank many friendly people from the
+.sm GROFF
+mailing list, including: Pierre-Jean, Steffen Nurpmeso, Ralph Corderoy, and
+Peter Schaffter.
+Special thanks go to Ralph Corderoy who runs the site, \fCtroff.org\fP, from
+which I started learning
+.sm TROFF .
+Without his website, a 17-year-old like me would not have known of such an
+amazing and historical world of typesetting.
+.lp
+I would like to thank James Clark, Wener Lemberg, and Ted Harding for
+.sm GROFF ;
+and Professor Brian W. Kernighan, with whom I've been exchanging correspondence
+regarding
+.sm TROFF
+and its family of features.
+.lp
+Last but not least, I would like to thank my mom for her patience with me and
+Bjørk\ B.\ E. for her unwavering support every step of the way.
+.lp
+If I have made the fatal accident of omitting any names from the list, I must
+admit that the fault is none other than mine.
+.++ C
+.+c "Prerequisites"
+.sh 1 "Environment setup"
+.pp
+To begin using the macro package, you need a compatible implementation of
+.sm TROFF
+installed on a
+.sm UNIX (-like)
+system.
+Currently, the following implementations of
+.sm TROFF
+are supported by this macro:
+.{b
+.bb
+GNU TROFF (GROFF)
+.bb
+Heirloom TROFF
+.}b
+.lp
+The macro package is developed and tested mainly on
+.sm GROFF
+v. 1.22.2 on Gentoo Linux, as that is the author's development environment.
+For more information on how to setup each implementation, see their respective
+manuals.
+.pp
+If this macro finds itself running on an incompatible environment, it shall fail
+nastily whereby printing a \fBFATAL\fP error message and putting an end to all
+text processing at once.
+To override this behaviour and forego this forewarning, insert the line:
+.CBEGIN
+\&.nr .g 1
+.CEND
+.bi before
+sourcing the macro package in your document.
+This essentially tricks the macro package into thinking you are using
+.sm GROFF .
+.pp
+In conclusion, the macro package is not compatible with classical
+.sm "AT&T TROFF" ,
+though this should not be too much of a problem given the ubiquity of heretofore
+listed modern implementations and the scarcity of classical compatriots.
+.pp
+Users of this macro package need only know how to use an existing macro package;
+.i "-me, -ms, -mm, -mom, &c." \c
+will do.
+The new requests provided by this macro package should be very easy to learn and
+should blend in beautifully enough to be used with existing macro packages.
+.pp
+The story takes a different turn if you intend to really study how the macro
+package works and debugging it from the source code.
+For that, some experience with plain
+.sm TROFF
+is a prerequisite.
+If you do not plan to mess around with the macros, you need not bat an eye at
+this paragraph.
+.sh 1 "Installation"
+.lp
+Installation is very easy.
+.pp
+On a
+.sm GROFF
+typesetting environment, copy all \fC*.tmac\fP files from within the repository
+and put them in \fC/usr/{,local}/share/groff/site-tmac/\fP.
+.pp
+Whether it be on a local or non-local (share) directory, depends on how
+.sm GROFF
+was installed.
+Please check where the \fCsite-tmac\fP directory is on your system with your
+system administrator or just try to look for it yourself.
+On Gentoo setups,
+.sm GROFF
+is installed as part of the @system set and the \fCsite-tmac\fP directory
+defaults to \fC/usr/share/groff/site-tmac/\fP.
+.sh 1 "Usage"
+.pp
+To use the macro package within your document, place the following request:
+.CBEGIN
+\&.mso lists.tmac
+.CEND
+.lp
+You ought to source \fClists.tmac\fP, and not \fCbul.tmac\fP or other specifics
+alone, unless you know what you are doing.
+\fClists.tmac\fP essentially acts as a wrapper that further sources other
+relevant macros and also checks for compatibility with the implementation of
+.sm TROFF
+you are using.
+It also makes sure that the entire macro package is loaded completely.
+.sh 1 "Getting help"
+.pp
+To get help with the macro package, refer to this manual or talk to the author
+of the macro package (the writer, me, Stephanie).
+.+c "Bulleted lists"
+.sh 1 "Introduction"
+.pp
+Bulleted lists are unnumbered lists not governed by a total order.
+A case in point could be shopping lists or most bucket lists.
+When total order is not desired over the items to be listed, a bulleted list is
+used.
+.pp
+With the facilities provided by
+.bi lists.tmac ,
+it is possible to quickly begin typesetting bulleted lists like this:
+.{b 2c
+.bb "\f[EMOJIR]👋\f[]"
+Hello there!
+.bb "\f[EMOJIR]💁\f[]"
+How was your day?
+Great fun, I bet!
+.{b
+.bb "\f[EMOJIR]😎\f[]"
+Did something cool?
+.bb "\f[EMOJIR]😂\f[]"
+Found a really punny/funny punchline?
+.{b
+.bb "\f[EMOJIR]😑\f[]"
+Please don't tell me it's a pun about your \*(lqAfternoon
+.sm TEA-ROFF \*(rq
+again!
+.bb "\f[EMOJIR]😘\f[]"
+IT'D BETTER BE SOMETHING FUNNY OMG.
+.}b
+.bb "\f[EMOJIR]😍\f[]"
+Watched a really cute cat video?!!!
+.}b
+.bb "\f[EMOJIR]😜\f[]"
+Okay, never mind.
+Bye!
+.}b
+.pp
+The obvious fact to be noted is that the bullet character need not always be
+\*(lq\(bu\*(rq, as it can always be customized for any specific bullet point in
+the list.
+For consistency, a default bullet character can even be defined for use
+throughout the entire document.
+.pp
+.bi lists.tmac
+remembers how far nested your lists are, in what order they are nested, and how
+much indentation from the left and top betides each one.
+This is important:
+.bi lists.tmac
+can exit from any nested order with the right exdentation and spacings so your
+document looks well-balanced and symmetrical, even if indentations are
+unpredictably or ridiculously customized.
+Again, for consistency, a default amount of indentation and spacing can be
+defined for use throughout the entire document.
+.pp
+It is also important to note that
+.bi lists.tmac
+allows you to nest your lists infinitely within one another until your computer
+runs out of memory, as it pushes some information about each nesting into a
+stack.
+.pp
+Entirely new left-indented or block-style paragraphs are even possible from
+within the lists.
+The paragraphs are set with appropriate spacings and indentations.
+.pp
+From here on, \fInested orders of lists\fP will be referred to by their $n$th
+order, as in the terminology borrowed from mathematics simply for convenience of
+reference.
+.pp
+In this chapter, we take a look at the facilities available to typeset bulleted
+lists and how they work.
+.sh 1 "List environments"
+.pp
+Before items of a bulleted list can be typeset onto the document,
+.bi lists.tmac
+needs to know when that list will begin.
+You must tell it to initialize an environment suitable for bulleted lists
+wherewithin items thereof can reside.
+.pp
+After an environment has been initalized, you will remain within that
+environment with the macros awaiting more list items.
+To close the environment shut and tell the macros not to expect any more list
+items, you must tell it to close that environment.
+Only after that can you confidently move on to writing other non-list parts of
+your document.
+.pp
+.q Environments
+mentioned here are not to be confused with
+.sm TROFF 's
+intrinsically provided environments, \fC.ev\fP.
+The same term is used, but the two are not the same thing.
+In fact, this macro package does not even use any \fC.ev\fP environments for its
+typesetting work.
+Therefore, it is highly unlikely that \*(lqenvironments\*(rq take their usual
+definition, unless specified otherwise.
+.sh 2 "Names"
+.(l L
+\fC.{b\fP \(em begins a bulleted list environment.
+\fC.}b\fP \(em ends a bulleted list environment.
+\fC\en[bulorder.hsp]\fP \(em de-facto relative horizontal indentation.
+\fC\en[bulorder.vsp]\fP \(em de-facto relative vertical spacing.
+.)l
+.lp
+The two requests have equal but opposite effect.
+The two numerical registers can be customized to suit your needs, although
+\*(lqsane\*(rq defaults are defined.
+.sh 2 "Synopsis"
+.CBEGIN
+\&.{b (hsp)? (vsp)?
+\&.}b
+.CEND
+.pp
+\fC.{b\fP takes two optional arguments: \fChsp\fP and \fCvsp\fP.
+.pp
+\fChsp\fP defines the custom amount horizontal indentation relative to the
+indentation in which \fC.{b\fP begins.
+If only a scalar value is given, the value is assumed to be in machine units.
+For more practical or convenient usage, scalars can be multiplied by unit
+vectors available within the typesetter: m (ems), n (ens), c (centimers), &c.
+If \fChsp\fP is not specified, the value from the numerical register
+\fCbulorder.hsp\fP is used, which can also be changed if needs be.
+The default value is $half roman c$.
+.pp
+\fCvsp\fP defines the custom amount of vertical indentation relative to the
+point at which \fC.{b\fP begins.
+If only a scalar value is given, the value is assumed ot be in machine units.
+For more practical or convenient usage, scalars can be multiplied by unit
+vectors available within the typesetter.
+If \fCvsp\fP is not specified, the value from the numerical register
+\fCbulorder.vsp\fP is used, which can also be changed if needs be.
+The default value is $forth roman v$.
+.pp
+If you only want to change parts of the parameters, say \fIvsp\fP but keep
+\fIhsp\fP intact, you must manually reference the de-facto numerical
+registers.
+.pp
+\fC.}b\fP takes no arguments whatsoever.
+.sh 2 "Description"
+.pp
+When list environments are begun with \fC.{b\fP, this is what
+happens:
+.{b
+.bb
+If \fChsp\fP is specified as one of the request's arguments, that value is
+interpreted and used as the relative horizontal indentation in machine units.
+If not, this value is assumed to be \fCbulorder.hsp\fP.
+.llp
+If \fCvsp\fP is specified as one of the request's arguments, the value is
+interpreted and used as the relative vertical spacing in machine units.
+If not, this value is assumed to be \fCbulorder.vsp\fP.
+.bb
+The value for \fChsp\fP is pushed into the stack \fCbulorder.hsps\fP.
+The value for \fCvsp\fP is pushed into the stack \fCbulorder.vsps\fP.
+.bb
+The requested horizontal and vertical spacing is given.
+List items can now be typeset.
+.}b
+.lp
+When list environments are ended with \fC.}b\fP, the process is much simpler:
+.{b
+.bb
+The request pops the top value off the \fCbulorder.hsps\fP stack and exdents
+back by that amount.
+.bb
+Then, it pops the top value off the \fCbulorder.vsps\fP stack and gives back
+that amount of vertical spacing.
+.}b
+.pp
+This allows indentations to be just right for nested lists with high complexity
+and also gives a line of symmetry perpendicular to the $y$-axis of the document.
+.pp
+The maximum number of items the stacks can hold is limited only by the memory
+provided for the instance of
+.sm TROFF .
+Thus, it is highly likely that you will run out of paper space for more
+indentation before the program runs out of memory.
+.sh 2 "Usage"
+.pp
+Respectively, the requests to initialize a new environment suitable for bulleted
+lists and to close that environment are as follows.
+The two paragraphs denoted by \fC.lp\fP are used for reference.
+.CBEGIN
+\&.lp
+My paragraph before my list.
+\&.{b \e" Open new list environment for my list
+\&.}b \e" Close list environment for my list
+\&.lp
+My paragraph after my list.
+.CEND
+.pp
+Any text lines in between \fC.{b\fP and \fC.}b\fP are indented by the
+appropriate amount.
+The two paragraphs denoted by \fC.lp\fP are at the same level of indentation.
+.pp
+Environments can be nested to infinitely many orders.
+The result is nested orders of bulleted lists.
+The following shows how they are nested:
+.CBEGIN
+\&.lp
+My paragraph before my lists.
+\&.{b \e" Open new list environment for my 1st-order list.
+\&.{b \e" Open new list environment for my 2nd-order list.
+\&.{b \e" Open new list environment for my 3rd-order list.
+\&.}b \e" Close list environment for my 3rd-order list.
+\&.}b \e" Close list environment for my 2nd-order list.
+\&.}b \e" Close list environment for my 1st-order list.
+\&.lp
+My paragraph after my lists.
+.CEND
+.pp
+It is important to match the curly braces, \fC{\fP and \fC}\fP, in your input
+source file so that all environments are opened and closed properly.
+The resulting matches should give an overall symmetric look within the code by
+drawing a line of symmetry at the highest order; the symmetry is especially
+obvious in the example above when there are no items intervening.
+This symmetry also carries on to the typeset output as well.
+Good editors like Vim will highlight matching braces.
+.pp
+However, it is acceptable to skip the first \fC.{b\fP if the first request
+within a list environment is already to be a bullet point (\fC.bb\fP).
+The macro package is smart enough to get itself out of this trouble, but this is
+still considered a fail-safe feature.
+It is \fInot\fP smart enough to automatically close list environments, though.
+So, it is very good practice to match braces properly from the beginning just to
+be neat and keep with the conventions.
+An example of this fail-safe mechanism will be seen in the next section.
+.sh 2 "Examples"
+.pp
+Here is a simple example along with a more specific case of the list
+environment's algorithm from \(sc Description.
+.CBEGIN
+\&.nr bulorder.hsp 2c \e" Use two 2cm of indent instead of default .5c
+\&.nr bulorder.vsp 1v \e" Use 1v of vertical spacing instead of
+\&.                   \e" default .25v
+\&.lp
+Line A
+\&.{b
+Line B
+\&.{b 1.3i 5v
+Line C
+\&.}b
+Line D
+\&.}b
+\&.lp
+Line E
+.CEND
+.{b
+.bb
+Input at line A will be set at the initial indentation level.
+.bb
+Line B will be indented relatively by \fCbulorder.hsp\fP and given a space above
+it of \fCbulorder.vsp\fP.
+.bb
+Line C will be indented relatively by 1.3 inches and given a space above it of 5
+vertical spaces' worth.
+.bb
+Line D will be \fBexdented\fP relatively by whatever Line C was indented
+relatively by (1.3 inches) and given a space above it of whatever space was
+given above Line C (5 vertical spaces).
+.bb
+Line E will be exdented relatively by whatever line B was indented relatively by
+(\fCbulorder.hsp\fP) and given a space above it of whatever Line B got above it
+(\fCbulorder.vsp\fP).
+Line E should then have the same indentation level as Line A.
+.}b
+.sh 2 "Afterword"
+.pp
+List environments prepare for the typesetting of list items (bullet points).
+Thus, list environments are nothing without list items.
+The next section describes the routines used to typeset list items that have
+bullet points and how they are used in the context of list environments.
+.sh 1 "List items"
+.pp
+Once environments are prepared for list items, there must then be the very thing
+it is intended for: list items!
+\fIBulleted list items\fP or \fIbulleted points\fP are items within a list which
+may contain some lines of text, equations from
+.sm EQN
+or even paragraphs of any standard kind imaginable.
+.pp
+Like environments, list items are fully customizable;
+list items can take their own custom bullet character instead of the default
+\*(lq\(bu\*(rq and their own spacings and indentation instead of the sane
+defaults.
+Unlike environments, list items need not be enclosed within braces or
+parentheses; metaphorically speaking, the request to declare a list item affects
+every line after it and its effect ends at another call to the request itself or
+at the end of the environment.
+The list item request uses no stacks.
+.pp
+Due to the ubiquity of list items over the list environments, the request to
+summon a list item also summons a new list environment if no one environment
+exists before it.
+However, it is not recommended to implicitly initialize a new list environment
+in this manner, as it makes for untidy documents and nightmarish maintenance.
+This feature is an exemplification of the macro package's self-correction; it is
+merely a fail-safe, and a fail-safe is only as good as a last resort.
+.sh 2 "Names"
+.(l
+\fC.bb\fP \(em begins one bulleted list item.
+\fC\en[bul.hsp]\fP \(em de-facto horizontal spacing between bullet and content
+\fC\en[bul.vsp]\fP \(em de-facto vertical spacing between list items
+.)l
+.sh 2 "Synopsis"
+.CBEGIN
+\&.bb (chr)? (hsp)? (vsp)?
+.CEND
+.pp
+\fC.bb\fP takes 3 optional arguments: \fCchr\fP, \fChsp\fP, and \fCvsp\fP.
+.pp
+\fCchr\fP defines the custom bullet character or string to be used for this
+particular list item.
+If \fCchr\fP is not specified, this value is taken from the string macro
+\fCbul.chr\fP, which is initially set to \*(lq\(bu\*(rq.
+.pp
+\fChsp\fP defines the amount of margin in machine units between the bullet point
+character defined by \fCchr\fP and the content of the list item adjacent
+thereto.
+It is possible to use a unit vector by which to multiply the scalar: m (ems), n
+(ens), &c.
+If \fChsp\fP is not specified, this value is taken from the numerical register
+\fCbul.hsp\fP, which is initially set to $half roman n$.
+.pp
+\fCvsp\fP defines the amount of margin in machine units between adjacent list
+items above it.
+It is possible to use a unit vector by which to multiply the scalar.
+If \fCvsp\fP is not specified, this value is taken from the numerical register
+\fCbul.vsp\fP, which is initially set to $forth roman v$.
+.pp
+If you only want to change parts of the parameters, say \fIhsp\fP but keep
+\fIchr\fP intact, you must manually reference the de-facto numerical
+registers.
+.sh 2 "Description"
+.pp
+When \fC.bb\fP is called, the following takes place:
+.{b
+.bb
+If \fC.bb\fP was called outside of a list environment, a new one is created
+automatically.
+.bb
+If one or more of \fIchr\fP, \fIhsp\fP, or \fIvsp\fP are explicitly specified as
+arguments, temporarily override the de-facto value of the string macros or/and
+numerical registers as necessary, ergo affecting only this list item.
+.bb
+Give \fIvsp\fP amount of vertical spacing above the bullet point.
+.bb
+From the current indentation, relatively exdent back by the width of \fIchr\fP
+\(pl the spacing specified by \fIhsp\fP.
+Therefore, \fIhsp\fP essentially specifies a \*(lqmargin\*(rq between the list
+item's content and \fIchr\fP.
+.llp
+The following part contains holy fucking math, but it is important: the
+resulting list depends on several key factors that are outside of \fIhsp\fP's
+scope.
+Let $hsp$ be the value of \fIhsp\fP (the horizontal spacing), $roman \en(.k$ be
+the current horizontal position of the typesetter, and $roman \en(.o$ be the
+page offset of the document.
+.{b
+.bb
+If $hsp - roman \en(.k >= roman \en(.o$, the list item's content will remain
+fixed in one place, never to move, whereas the bullet point character will move
+depending on the the value of $hsp$.
+Therefore, $hsp$ will denote the distance between the unmoveable list item's
+content and the moveable $hsp$.
+.bb
+If $hsp - roman \en(.k < roman \en(.o$, the list item's content and the bullet
+point character will both move and justify in such a way that the distance
+between the two is equal to $hsp$.
+Therefore, $hsp$ will denote the distance between the moveable list item's
+content and the moveable $hsp$.
+.}b
+.bb
+Print \fIchr\fP and horizontally insert a space of \fIhsp\fP adjacent to the
+printed \fIchr\fP.
+The width of this printing cancels out the exdentation effect by the previous
+step, ergo returning the same indentation as before.
+.bb
+The content of the list item is expected to continue on the next line after the
+request.
+.}b
+.pp
+Because text usually ends up at the same indentation as what was given by the
+latest call to \fC.{b\fP, list items end upon the next encounter of \fC.}b\fP.
+.sh 2 "Usage"
+.pp
+List items should begin with an initialized list environment.
+Explicitly declared environments can then be nested many times over before the
+actual list item:
+.CBEGIN
+\&.lp
+Line A
+\&.{b \e" 1st-order
+\&.{b \e" 2nd-order
+\&.bb \e" 1st item in 2nd-order
+Line B
+\&.}b \e" End 2nd-order
+\&.bb \e" 1st item in 1st-order
+Line C
+\&.}b \e" End 1st-order
+\&.lp
+Line D
+.CEND
+.lp
+Obviously, Line B will be indented by more than Line C.
+.pp
+A list item can be used to implicitly initialize one and \fIonly one\fP list
+environment if and only if there is not one list environment before it:
+.CBEGIN
+\&.lp
+Line A
+\&.bb \e" 1st item in implicit 1st-order.
+Line B
+\&.}b
+\&.lp
+Line C
+.CEND
+.lp
+Even though environment initializations can be this implicit, environments
+cannot close automatically when you want it to.
+You must close them explicitly after your list has ended.
+Nonetheless, it is not recommended to implicitly initialize environments this
+way.
+.pp
+Custom bullet point characters and spacings are possible.
+If the bullet point string contains spaces, you must quote them when parsing.
+.CBEGIN
+\&.{b
+\&.bb \ef[EMOJIR]\f[EMOJIR]🔥💯\f[]\ef[] 1m 1v
+100-day Snap streak! OMG
+\&.}b
+.CEND
+.lp
+This gives a space of a vertical space's worth above this list item, prints a
+fire emoji next to a \fI100\fP emoji, horizontally spaces by 1m, and prints the
+content on the line below the request.
+.sh 2 "Example"
+.(b L
+.CBEGIN
+\&.lp
+Here are some basic mathematical operations and their properties:
+\&.{b
+\&.bb \e(pl 1m
+Addition
+\&.{b
+\&.bb \e*[bul.chr] 0.5m 1v
+Commutative: \(Do5 + 4 = 4 + 5\(Do
+\&.bb
+Associative: \(Do(8 + 6) + 4 = 8 + (6 + 4)\(Do
+\&.}b
+\&.bb \e(mi 1m
+Subtraction
+\&.{b
+\&.bb !! \en[bul.hsp] 1v
+Not commutative: \(Do6 - 3 != 3 - 6\(Do
+\&.bb !!
+Not associative: \(Do(5 - 2) - 1 != 5 - (2 - 1)\(Do
+\&.}b
+\&.}b
+.CEND
+.)b
+.lp
+Outputs:
+.(b
+.llp
+Here are some basic mathematical operations and their properties:
+.{b
+.bb \(pl 1m
+Addition
+.{b
+.bb \*[bul.chr] 0.5m 1v
+Commutative: $5 + 4 = 4 + 5$
+.bb
+Associative: $(8 + 6) + 4 = 8 + (6 + 4)$
+.}b
+.bb \(mi 1m
+Subtraction
+.{b
+.bb !! \n[bul.hsp] 1v
+Not commutative: $6 - 3 != 3 - 6$
+.bb !!
+Not associative: $(5 - 2) - 1 != 5 - (2 - 1)$
+.}b
+.}b
+.)b
+.sh 1 "Large example"
+.pp
+The following is the
+.sm TROFF
+source for the large bulleted list example in \(sc Introduction.
+Obviously, most of the requests are not intrinsic to
+.sm TROFF ,
+but are provided by the \f(BIlists.tmac\fP macros.
+Consider this as the concluding example to the entire sense of this chapter,
+from which you can adapt to fit your use cases.
+The first paragraph is there for reference.
+.CBEGIN
+\&.pp
+With the facilities provided by
+\&.bi lists.tmac ,
+it is possible to quickly begin typesetting bulleted lists like this:
+\&.{b 2c
+\&.bb "\ef[EMOJIR]\f[EMOJIR]👋\f[]\ef[]"
+Hello there!
+\&.bb "\ef[EMOJIR]\f[EMOJIR]💁\f[]\ef[]"
+How was your day?
+Great fun, I bet!
+\&.{b
+\&.bb "\ef[EMOJIR]\f[EMOJIR]😎\f[]\ef[]"
+Did something cool?
+\&.bb "\ef[EMOJIR]\f[EMOJIR]😂\f[]\ef[]"
+Found a really punny/funny punchline?
+\&.{b
+\&.bb "\ef[EMOJIR]\f[EMOJIR]😑\f[]\ef[]"
+Please don't tell me it's a pun about your \e*(lqAfternoon
+\&.sm TEA-ROFF \e*(rq
+again!
+\&.bb "\ef[EMOJIR]\f[EMOJIR]😘\f[]\ef[]"
+IT'D BETTER BE SOMETHING FUNNY OMG.
+\&.}b
+\&.bb "\ef[EMOJIR]\f[EMOJIR]😍\f[]\ef[]"
+Watched a really cute cat video?!!!
+\&.}b
+\&.bb "\ef[EMOJIR]\f[EMOJIR]😜\f[]\ef[]"
+Okay, never mind.
+Bye!
+\&.}b
+.CEND
+.sh 1 "Final words"
+.pp
+Bulleted lists in everyday life are not as fancy as the ones seen in this
+chapter, not least for one generally wants consistent indentations, spacings,
+bullet points, and other subtleties across the entire document; although we know
+that \f(BIlists.tmac\fP makes possible a lot more things than that.
+Therefore, it often makes little sense to use \f(BIlists.tmac\fP other than for
+its ability to nest lists.
+All is well, though.
+Just know that \f(BIlists.tmac\fP has quite a bit to offer and that you can come
+back to this manual at anytime you feel like.
+.pp
+There are also more types of lists and even paragraphs that \f(BIlists.tmac\fP
+can put forth in doing.
+The next 2 chapters detail them both respectively.
+.+c "Totally ordered lists"
+.+c "Paragraphs"
+.sh 1 "Introduction"
+.pp
+When bulleted list items consist of generally text or inline
+.sm EQN
+equations, the indentation does not get ruined.
+However, when a paragraph is started within a list item using \fI-me\fP's
+\fC.pp\fP or \fC.lp\fP, one would only hope that the paragraphs retain the
+default indentation and will be typeset in such a way that it is clear the
+paragraph belongs to a list environment in which it is nested.
+Unfortunately, it isn't the case, as the usual /\fC.[lp]p\fP/ resets the
+indentation and totally ruins the typesetting of the list item.
+.pp
+Display equations set by
+.sm EQN
+using the \fI-me\fP macros also look bad if /\fC.EQ [MLI]\fP/ is called.
+However, unlike the paragraph requests, the \fC.EQ\fP request does not seem to
+reset indentations, although it does momentarily ignore them completely.
+Consider using centred equations as those generally look good even though they
+temporarily ignore the indentations used, or use inline equations instead.
+For example:
+.{b
+.bb
+Useless calculus I already forgot: $lim from {x -> 0} 1 over x = inf$.
+.bb
+A more very-useful-in-your-real-life equation:
+.EQ "(complicated eyesore #1)" \" lol.  I should go back to Calculus some day.
+int from down 10 0 to pi sin (x) ~ dx = 2
+.EN
+.bb
+All students do not need to understand any of these equations: just remember
+them or else you will fail your exams and your parents will get pissed.
+.}b
+.pp
+To illustrate the scale of this problem, the following bulleted list uses the
+\fC.pp\fP to start paragraphs within a list environment.
+The following example explains a lot about the implications for bulleted lists,
+although the same idea actually applies to both bulleted and totally ordered
+lists.
+.{b 1c 1v
+.bb
+Pretium eu, enim. Nunc commodo ultricies dui. Cras gravida rutrum massa.
+Donec accumsan mattis turpis. Quisque sem. Quisque elementum sapien iaculis
+augue. In dui sem, congue sit amet, feugiat quis, lobortis at, eros.
+.bb
+In vel dolor sed nibh sollicitudin tincidunt. Ut consequat nisi sit amet
+nibh. Nunc mi tortor, tristique sit amet, rhoncus porta, malesuada elementum,
+nisi. Integer vitae enim quis risus aliquet gravida.
+.pp
+Nunc vel mauris. Pellentesque vehicula orci id libero. In hac habitasse platea
+dictumst. Nulla sollicitudin, purus id elementum dictum, dolor augue hendrerit
+ante, vel semper metus enim et dolor. Pellentesque molestie nunc id enim. Etiam
+mollis tempus neque. Duis tincidunt commodo.
+.bb
+Potenti. In hac habitasse platea dictumst. Cras quis lacus. Vestibulum
+rhoncus congue lacus. Vivamus euismod, felis quis commodo viverra, dolor elit
+dictum ante, et mollis eros augue at est. Class aptent.
+.}b
+.pp
+As you can see, where the conventional paragraph begins at \*(lqNunc vel
+mauris,\*(rq the indentation made by the list environment is completely
+obliterated, a new temporarily indentation is set that doesn't even properly
+line up with the previous list item, and the next list item no longer has the
+proper indentation.
+.pp
+Provided with this macro package are some special paragraph requests.
+These requests are designed to be used within a list environment and also
+mimic the behaviour of \fI-me\fP's paragraph requests.
+.pp
+There are two different paragraph requests that do the same as those of
+\fI-me\fP's.
+They use the same amount of indentation and spacing as do \fI-me\fP's
+paragraphs, which is defined by default whether or not you are using the
+\fI-me\fP macros.
+Furthermore, if you change the indent/spacing values in the appropriate
+numerical register for \fI-me\fP, those changes are immediately reflected with
+the special paragraph requests.
+.pp
+The only two differences between \fI-me\fP's paragraph and \f(BIlists.tmac\fP's
+special paragraphs are that the indentations do not get reset especially within
+list environments, and that you can define a custom amount of temporary
+indentation and spacing for only a specific paragraph via arguments, all this
+when using \f(BIlists.tmac\fP's paragraphs.
+.pp
+The following shows the same example as before, but this time using one of the
+macro package's special paragraphs.
+.{b 1c 1v
+.bb
+Pretium eu, enim. Nunc commodo ultricies dui. Cras gravida rutrum massa.
+Donec accumsan mattis turpis. Quisque sem. Quisque elementum sapien iaculis
+augue. In dui sem, congue sit amet, feugiat quis, lobortis at, eros.
+.bb
+In vel dolor sed nibh sollicitudin tincidunt. Ut consequat nisi sit amet
+nibh. Nunc mi tortor, tristique sit amet, rhoncus porta, malesuada elementum,
+nisi. Integer vitae enim quis risus aliquet gravida.
+.lpp
+Nunc vel mauris. Pellentesque vehicula orci id libero. In hac habitasse platea
+dictumst. Nulla sollicitudin, purus id elementum dictum, dolor augue hendrerit
+ante, vel semper metus enim et dolor. Pellentesque molestie nunc id enim. Etiam
+mollis tempus neque. Duis tincidunt commodo.
+.bb
+Potenti. In hac habitasse platea dictumst. Cras quis lacus. Vestibulum
+rhoncus congue lacus. Vivamus euismod, felis quis commodo viverra, dolor elit
+dictum ante, et mollis eros augue at est. Class aptent.
+.}b
+.lp
+As you can see, a new left-indented paragraph is made within a list item and no
+indentation is lost.
+Everything flows smoothly.
+.lpp
+As a matter of fact, because of the simplicity that are the special paragraph
+requests, you can also use them in lieu of the paragraphs provided by \fI-me\fP.
+That is, you can use them outside of list environments or within a document
+completely free from any lists!
+The output is meant to look the same (i.e. you could replace all occurrences of
+\fI-me\fP's paragraphs with the special requests), but it is particularly useful
+when you want indentations preserved, that's all.
+.lpp
+This paragraph and the one above it are examples.
+They are not set using \fI-me\fP's requests, but rather using the special
+requests.
+As you can see, you are free to use it outside of list environments of any type,
+and it looks quite okay, doesn't it?
+Compare these with the paragraphs above.
