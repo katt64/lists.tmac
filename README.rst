@@ -37,7 +37,7 @@ sophisticated options amongst all else.  Whilst providing a high degree of
 customizability, it also tries to be convenient and easy-to-use by providing
 output suitable for most cases by default without any customization or
 interventions, and also provide some error-correction facilities to get out of
-sticky situations.
+most sticky situations.
 
 The general target audience of this macro package is writers and people who like
 typesetting.  They may be at a beginner-level in Troff and UNIX and they may not
@@ -54,7 +54,7 @@ caveats.  It also showcases some of the best things *list.tmac* can provide --
 lists!  Generally speaking, good software comes with good documentation, so
 the documentation aims to be very good and detailed.  Many of the points stated
 here will be stated again in equal or greater verbosity within the typeset
-manual.  You should definitely check that manual out!
+manual.  You should definitely check it out!
 
 Interested? 😊
 ==============

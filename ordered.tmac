@@ -6,10 +6,9 @@
     Stephanie Björk (Katt) <katt16777216@gmail.com>
 ..
 .\" Default values (override by resetting these or parse arguments to requests)
-.nr tolorder.hsp 0.5c \"  Default relative indentation for an order of {o
 .nr tolorder.vsp 0.25v \" Default vertical spacing for an order of {o
 .nr tolorder.depth 1 \"   Default initial depth to start at for any order
-.nr tolorder.depth.hsp \n[tolorder.hsp] \" Default indent for each depth-1
+.nr tolorder.depth.hsp 0.5c \" Default indent for each depth
 .ds tolorder.toset 1 \"   Default totally ordered set for one nested order
 .ds tolorder.delim . \"   Default delimiter for each depth of a list item
 .nr oli.vsp 0.25v \"	  Default vertical spacing for each list item
@@ -17,8 +16,7 @@
 .
 .\" Again, I must thank James Clark, Werner Lemberg, and Ted Harding for such a
 .\" stable and patient typesetting software -- Groff.  Without their efforts,
-.\" the following 7 lines could not have existed.
-.array tolorder.hsps
+.\" the following 6 lines could not have existed.
 .array tolorder.vsps
 .array tolorder.rootinds
 .array tolorder.depths
@@ -43,21 +41,18 @@
 .	if \\n(.$>4 .nr _tolorder.hsp \\$5u
 .	if \\n(.$>5 .nr _tolorder.vsp \\$6u
 .
-.	tolorder.hsps.push \\n[_tolorder.hsp]u
 .	tolorder.vsps.push \\n[_tolorder.vsp]u
 .	tolorder.depth.hsps.push \\n[_tolorder.depth.hsp]u
 .	tolorder.tosets.push \\*[_tolorder.toset]
 .	tolorder.delims.push \\*[_tolorder.delim]
 .	tolorder.depths.push \\n[_tolorder.depth]
 .
-.	array tolorder.\\n[tolorder.hsps.c]
+.	array tolorder.\\n[tolorder.vsps.c]
 .
 .	sp \\n[_tolorder.vsp]u
-.	in +\\n[_tolorder.hsp]u
 .
 .	tolorder.rootinds.push \\n(.i
 .
-.	rr _tolorder.hsp
 .	rr _tolorder.vsp
 .	rr _tolorder.depth.hsp
 .	rr _tolorder.depth
@@ -66,19 +61,17 @@
 ..
 .
 .de }o
-.	if \\n[tolorder.hsps.c]>0 \{ \
-.		array.rm tolorder.\\n[tolorder.hsps.c]
+.	if \\n[tolorder.vsps.c]>0 \{ \
+.		array.rm tolorder.\\n[tolorder.vsps.c]
 .
 .		nr compensate \\n(.i-\\n[tolorder.rootinds..\\n[tolorder.rootinds.c]]
 .		in -\\n[compensate]u
 .		rr compensate
 .
-.		in -\\n[tolorder.hsps..\\n[tolorder.hsps.c]]u
 .		sp \\n[tolorder.vsps..\\n[tolorder.vsps.c]]u
 .
 .		tolorder.tosets.pop
 .		tolorder.delims.pop
-.		tolorder.hsps.pop
 .		tolorder.vsps.pop
 .		tolorder.rootinds.pop
 .		tolorder.depth.hsps.pop
@@ -87,7 +80,7 @@
 ..
 .\" Totally ordered list items themselves
 .de oo
-.	if \\n[tolorder.hsps.c]=0 .{o
+.	if \\n[tolorder.vsps.c]=0 .{o
 .
 .	\" Local default values
 .	nr _oli.depth \\n[tolorder.depths..\\n[tolorder.depths.c]]
@@ -107,23 +100,23 @@
 .	if \\n[_oli.depth]<=0 .nr _oli.depth 1
 .	nr tolorder.depths..\\n[tolorder.depths.c] \\n[_oli.depth]
 .
-.	if \\n[tolorder.\\n[tolorder.hsps.c].c]>=\\n[_oli.depth] \{ \
-.		nr tolorder.\\n[tolorder.hsps.c]..\\n[_oli.depth] +1
+.	if \\n[tolorder.\\n[tolorder.vsps.c].c]>=\\n[_oli.depth] \{ \
+.		nr tolorder.\\n[tolorder.vsps.c]..\\n[_oli.depth] +1
 .	\}
-.	while \\n[tolorder.\\n[tolorder.hsps.c].c]<\\n[_oli.depth] \{ \
-.		tolorder.\\n[tolorder.hsps.c].push 1
+.	while \\n[tolorder.\\n[tolorder.vsps.c].c]<\\n[_oli.depth] \{ \
+.		tolorder.\\n[tolorder.vsps.c].push 1
 .		in +\\n[_oli.depth.hsp]u
 .	\}
-.	while \\n[tolorder.\\n[tolorder.hsps.c].c]>\\n[_oli.depth] \{ \
-.		tolorder.\\n[tolorder.hsps.c].pop
+.	while \\n[tolorder.\\n[tolorder.vsps.c].c]>\\n[_oli.depth] \{ \
+.		tolorder.\\n[tolorder.vsps.c].pop
 .		in -\\n[_oli.depth.hsp]u
 .	\}
 .
 .	nr i 0 1
-.	while \\n+i<=\\n[tolorder.\\n[tolorder.hsps.c].c] \{ \
-.		af tolorder.\\n[tolorder.hsps.c]..\\ni \\*[_oli.toset]
-.		as ord "\\n[tolorder.\\n[tolorder.hsps.c]..\\ni]\\*[_oli.delim]
-.		af tolorder.\\n[tolorder.hsps.c]..\\ni 1
+.	while \\n+i<=\\n[tolorder.\\n[tolorder.vsps.c].c] \{ \
+.		af tolorder.\\n[tolorder.vsps.c]..\\ni \\*[_oli.toset]
+.		as ord "\\n[tolorder.\\n[tolorder.vsps.c]..\\ni]\\*[_oli.delim]
+.		af tolorder.\\n[tolorder.vsps.c]..\\ni 1
 .	\}
 .	rr i
 .
@@ -144,11 +137,11 @@
 .nr rnl.rd 0
 .de rnl
 .	nr rnl.rd +1
-.	if \\n[rnl.rd]<=\\n[tolorder.\\n[tolorder.hsps.c].c] \{ \
+.	if \\n[rnl.rd]<=\\n[tolorder.\\n[tolorder.vsps.c].c] \{ \
 .		if !'\\$1'-' \{ \
-.			ie \\n[rnl.rd]=\\n[tolorder.\\n[tolorder.hsps.c].c] .nr n \\$1-1
+.			ie \\n[rnl.rd]=\\n[tolorder.\\n[tolorder.vsps.c].c] .nr n \\$1-1
 .			el .nr n \\$1
-.			nr tolorder.\\n[tolorder.hsps.c]..\\n[rnl.rd] \\nn
+.			nr tolorder.\\n[tolorder.vsps.c]..\\n[rnl.rd] \\nn
 .			rr n
 .		\}
 .
