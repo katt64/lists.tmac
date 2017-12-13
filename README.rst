@@ -71,8 +71,8 @@ I'll let you compile it by yourself so as to see how interested you are in this.
 :p  Haha, just kidding...  Doesn't it feel great to compile things yourself,
 though?
 
-An example
-==========
+An example 🙈
+==============
 The following is a very simple example of a common listing application this
 macro package can help with.  This section is divided into three subsections: an
 example in reStructuredText (from which inspiration for *lists.tmac* took
