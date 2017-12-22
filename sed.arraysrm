@@ -1,6 +1,8 @@
 #!/bin/sed -rnf
 # vim: ft=sed sw=4 et tw=80 wrap
 # sed.arraysrm  Generates entries to remove macros made by the array class.
+#               This file is for macro developers only.  Ignore this if you
+#               will.
 /^\.de array$/,/^\.{2}$/ {
     s/\.\sde (\\\\\$1\..+) end/.\trm \1/p
 }

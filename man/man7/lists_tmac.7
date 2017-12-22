@@ -1,0 +1,618 @@
+'\" et
+.EQ
+delim $$
+.EN
+.TH lists_tmac 7 "December 2017"
+.SH NAME
+.BR lists.tmac \c
+\ \(em A macro package for exceptionally well-typeset lists in Troff.
+.SH SYNOPSIS
+.SS Bulleted lists
+.LP
+The following synopsis shows general macros available for typesetting bulleted
+lists.
+.SY .{b
+.OP chr
+.OP hsp
+.OP vsp
+.YS
+.SY .}b
+.YS
+.SY .bb
+.OP chr
+.OP hsp
+.OP vsp
+.YS
+.SS Totally ordered lists
+.LP
+The following synopsis shows general macros available for typesetting totally
+ordered (lexicographically ordered) lists.
+.SY .{o
+.OP toset
+.OP delim
+.OP depth
+.OP depth_hsp
+.OP hsp
+.OP vsp
+.YS
+.SY .}o
+.YS
+.SY .oo
+.OP depth
+.OP toset
+.OP delim
+.OP depth_hsp
+.OP hsp
+.OP vsp
+.YS
+.SY .rnl
+.RI [ n ] \|.\|.\|.
+.YS
+.LP
+Note that only commonly-used, general typesetting macros are listed in the
+.SB SYNOPSIS.
+These macros will not be detailed within this manual page, but within the manual
+page to which they pertain.
+This manual page only describes the general entirety of the macro package.
+.LP
+Macros available for further tweaking and numerical registers for internal usage
+are not generally used or are unsafe for novices, and thus do not appear in this
+section of the manual.
+However, they will be detailed later on as a caveat/subtlety within their
+respective parts of their respective manual pages.
+.SH DESCRIPTION
+.LP
+In this section lies the general description of the macro package, not specific
+to any type of list.
+For a more casual and succinct rendition of this information, refer to
+.UR README.rst
+the README.rst file
+.UE
+in the Git repository.
+.SS What it is
+.LP
+.B lists.tmac
+is a macro package that facilitates the typesetting of exceptionally beautiful
+lists within Troff and Nroff.
+It can do bulleted and totally ordered (lexicographically ordered) lists with
+arbitrary complexity.
+The entire package is free and open-source and is written in 100% pure Troff
+with no other programming languages involved whatsoever.
+The source code and project base can be found on
+.UR https://github.com/katt64/lists.tmac
+its Github repository
+.UE .
+.LP
+It aims to do one thing and do it very well: lists, lists, lists!
+Everything has been made to work well out-of-the-box and just look good, from
+the source code up to the documentation.
+It is also designed to be fun to use and maintain as well, whilst being
+very powerful.
+.LP
+Keep in mind that development for \fBlists.tmac\fP is aimed specifically at
+Troff output, not Nroff output, but it does work with Nroff as the two use the
+same document formatting language.
+As such, there is no guarantee that output in Nroff will look as good as that of
+Troff.
+.LP
+Inspiration was taken from lists within reStructuredText documents.
+reStructuredText can set bulleted and lexicographical lists of many nested
+orders and depths, but that is about all it can do.
+This macro package brings this feature home to Troff and extends it a lot
+further with many features only available thanks to Troff's versatility.
+.LP
+As such,
+.B lists.tmac
+extends the capabilities of any builtin bulleted and totally ordered list
+macro(s) provided by reStructuredText and the classical macro packages,
+especially the \fI-me\fP macros.
+This is done by giving the writer full control over the setting of lists,
+providing means for \fIinfinitely many\fP nested orders (lists of lists) and
+depths (deeper numbers) of lists each of which can be customized individually,
+and a few more fancy things.
+This is provided whilst also maintaining a certain amount of convenience by
+automating things with good-looking general defaults so that the writer need not
+fuss about the little details if it is not necessary.
+Some errors can also be handled with grace under fire with little to no
+banter on the standard error.
+.LP
+To induce a bit of nostalgia for the writers, the macro package is designed with
+a look-and-feel that blends in with other classical macro packages, especially
+the \fI-me\fP macros.
+To clarify, the macros provided by \fBlists.tmac\fP should look good and blend
+in with the macros provided by \fI-me\fP.
+As such, this means that macro names are generally terse;
+macros that are most frequently used are terser than the ones that aren't.
+Luckily enough, the situation is better in \fBlists.tmac\fP as some occasionally
+used macros are 3 characters long excluding the beginning dot (.)
+.SS What it is not
+.LP
+.B lists.tmac
+is not a replacement for an entire macro package; it is intended to be used
+.I in tandem with
+other macro packages.
+It can only do lists, nothing else.
+Technically, it does provide facilities for a few common paragraphing styles,
+but it is only to be used within list contexts.
+As such, if it were coerced into completely replacing an entire macro package
+such as \fI-me\fP, there will be no facilities for sections, fancy paragraphs,
+footnotes, title lines, adequate margins, &c.
+.LP
+If fancy lists with many orders and depths of nestings are not desired, one
+should \fInot\fP be using this macro package, so as to keep things simple.
+.B lists.tmac
+is a very big and highly complex beast in typesetting, but not as big on average
+as some general macro packages.
+When it is used within a Troff document, it defines a \fIfucking shitload\fP
+of macros and numerical registers of its own in a recursive manner; a rough
+count gives at least 76 macros and 23 numerical registers initially.
+It must be this way because of the features and customizability it aims to
+provide.
+As such, if your needs can be satisifed with just your default macro package,
+don't use
+.B lists.tmac.
+On the other hand, if you must have fancy lists, use it like there is no
+tomorrow.
+.SH INSTALLATION
+.LP
+Before installation, make sure that you have a compatible Troff compiler.
+Currently, known compilers that work with this macro package are:
+.IP \(bu 2m
+GNU TROFF
+.IP \(bu
+Heirloom TROFF
+.LP
+If your compiler seems not to be compatible, a fatal error will occur and all
+document processing stops at that instant.
+.LP
+The entire repository for the macro package which includes the macro files
+themselves, manual pages, license information, some other information, and some
+other things can be fetched through Github into a directory.
+Once obtained, be sure to read the
+.UR LICENSE
+4-clause BSD license information
+.UE
+and get acquainted with the
+.UR README.rst
+README
+.UE
+before continuing.
+.LP
+Optionally, one can check to make sure that all
+.SM TMAC
+source files have not been compromised by making sure that all commits are
+signed by their proclaimed authors.
+This usually shows as a green \m[green]Verified\m[] tag enclosed in a box when
+one views the information about the commit.
+We never accept developers who do not sign their commits and unsigned commits
+are rejected.
+Also optional, one can check that their cloned copy of the repository is
+legitimate by verifying the
+.SM SHA512
+checksums of each and every
+.SM TMAC
+file.
+.LP
+Finally, simply copy all the
+.SM TMAC
+files (i.e. files that end with a \fC.tmac\fP extension) from the repository and
+put them in your \fCsite-tmac\fP directory, which is usually in
+\fC/usr/share/groff/site-tmac\fP.
+Check with your local system administrator or do a quick look-through to check
+where this folder really is before copying.
+.SH CONFIGURATION
+.LP
+Configuration is generally done within the Troff document on which the writer is
+working on \fIafter\fP the macro package is loaded.
+Any configuration will be overwritten by the defaults with no forewarnings if it
+is done before the macro package is loaded.
+.LP
+Configuration is done by setting appropriate numerical registers to the desired
+values.
+These numerical registers are specific to the types of lists (bulleted and
+totally ordered) and are thus documented in their respective manual pages, not
+in here.
+They are also documented, albeit succinctly, in the
+.SM TMAC
+source files to which they pertain.
+.SH EXAMPLES
+.LP
+Examples and their corresponding Troff source can generally be found in the
+manual page
+.B lists_tmac_ex\fR(7)\fR.
+There, features and caveats will also be detailed along with all the figures.
+Only practical examples will be seen even if the macro package can generally
+offer more customizability.
+As such, it is not a reference manual for \fIall\fP use cases.
+.LP
+It may be best to view that manual page in Troff (on a graphical window on X)
+and not Nroff (on the terminal).
+This can be done by issuing the following variant of the \fIman\fP command which
+will give you Postscript output on standard output, from which you can pipe to
+your favourite PDF viewer like \fBzathura\fP(1) or save to a file.
+.RS
+.EX
+man -Tps 7 lists_tmac_ex
+.EE
+.RE
+.LP
+Another good but very basic example of \fBlists.tmac\fP usage can be found in
+\(sc An example \f[EMOJIR]🙈\f[] of
+.UR README.rst
+the main README file
+.UE .
+There, one will find a comparison between the typeset output of Troff (not
+Nroff) and the inspirer of \fBlists.tmac\fP, reStructuredText.
+The source code for the Troff output can also be found there.
+It can be tried out on your setup if you have \fBlists.tmac\fP installed.
+.LP
+For more detailed or complete examples, see the reference manual page for each
+type of list \fBlists.tmac\fP provides.
+.SH ERRORS
+.LP
+In this section, only errors that are general to the entire macro package are
+documented.
+For errors specific to a type of list, consult their respective manual pages.
+.LP
+Error messages always take a form representable by the following regular
+expression.
+Pay close attention on the capture groups in parentheses ().
+.RS
+.EX
+(FATAL|ERROR|WARNING|INFO) \e((.+)\e): (.+)
+.EE
+.RE
+.LP
+The following table shows what each capture group represents.
+Within the \fICapture\fP column, text that is set in \fRroman\fP typeface
+signifies an exact match, whereas text that is set in \fIitalics\fP signifies a
+more abstract idea of a match.
+.TS
+center allbox tab(:) ;
+cb cb cb
+li l lw30 .
+Capture group:Capture:Meaning
+\e1:FATAL:T{
+An error occurred and it was so fatal that the macro package cannot continue and
+must abruptly abort all text processing when the error is found.
+T}
+\^:ERROR:T{
+An error occurred during text processing and it was quite bad.
+Text processing can continue, but don't expect the output to look as desired.
+T}
+\^:WARNING:T{
+Either the macro package had a misfortunate faux pas whilst typesetting or the
+writer gave the macro package a preposterous task.
+T}
+\^:INFO:T{
+The macro package is giving some information on what is going to happen that may
+or may not seem surprising.
+It is simply for the writer's information.
+T}
+\e2:\fIfilename\fP:T{
+The filename, excluding the path, of the macro file responsible for this noise.
+This is given so that the situation can easily be traced back to a specific
+feature or a specific type of list responsible for the havoc.
+T}
+\e3:\fIsome error message\fP:T{
+An succinct description of the problem is given here so the nature of the
+problem is known.
+T}
+.TE
+.sp
+.LP
+What follows is a list of possible errors in the general context of the macro
+package.
+.TP
+.I FATAL (lists.tmac): Not compatible outside GNU/Heirloom TROFF.
+The macro package is not compatible if it is not used with either GNU or
+Heirloom versions of Troff.
+.br
+This is generally because of some macro definitions whose names consist of more
+than two characters excluding the dot (.), some numerical registers whose
+names consist of more than two characters, and some control flow constructs
+available only in the modern implementations of Troff.
+.br
+After reading the
+.SM TMAC
+source files, if you are certain that your implementation of Troff supports
+these fancy things, then remove the 9th line of the \(lqlists.tmac\(rq file.
+If you stubbornly do this without making sure your implementation has what it
+takes, then your typeset output may look like shit.
+.br
+Once this error is encountered, document processing terminates, hence the
+.SB FATAL
+nature.
+.LP
+As of today, there is only one possible error that could be emitted by the
+entire \fBlists.tmac\fP macro package and it is the one above.
+This goes to demonstrate the self-rectifying abilities the macro package
+generally posesses and also demonstrate the laissez-faire attitude specific to
+the author(s).
+.LP
+If you think a message could be related to a bug, even if distantly, please feel
+free to report it.
+See
+.SB BUGS
+for how they can be reported.
+.SH ENVIRONMENT
+.LP
+Within the
+.SM TROFF
+typesetting environment of the document, some numerical registers have their
+values inherited from the \fI-me\fP macros if the \fI-me\fP macros have been
+sourced before this macro package, but those such numerical registers will be
+set to a sensible default if otherwise.
+The \(lqsensible default\(rq is the same default provided by the \fI-me\fP
+macros anyway.
+.LP
+Strictly speaking, these numerical registers will be defined by \fBlists.tmac\fP
+if and only if they have not been defined before this macro package is sourced,
+but are left untouched otherwise.
+.LP
+It is relatively rare for a numerical register in this macro package to behave
+this way, but it is put there when a convenience is seen fit.
+This then goes to demonstrate how the macro package attempts to integrate with
+an existing macro package setting if any, and change it otherwise.
+.LP
+Numerical registers that behave this way notably include:
+.IP \(bu 2m
+\fI\en(ps\fP \(em Default vertical spacing between paragraphs inside list
+contexts.
+Defaults to $4200u$ if undefined.
+.IP \(bu
+\fI\en(pi\fP \(em Default temporary indent for left-indented paragraphs.
+Defaults to $25000u$ if undefined.
+.LP
+It can be seen now that these numerical registers coincide with what the
+\fI-me\fP macro uses.
+So change them with care if they must be changed at all.
+.SH FILES
+In the following table, files that are important to the functionality of
+.B lists.tmac
+are listed along with a short description of what they are and what they depend
+on.
+These files all end with a \fI.tmac\fP extension as they are macro files written
+in Troff, for Troff.
+.TS
+box ;
+ci ci ci
+li lw30 lw30 .
+Name	Description	Dependencies
+_
+arrays.tmac	T{
+A manual and minimalistic implementation of a JavaScript-\:style array for
+Troff.
+T}	\-
+bul.tmac	T{
+Macros for bulleted lists
+T}	arrays.tmac
+lists.tmac	T{
+A wrapper macro file that loads all important macro definitions in one go.
+T}	T{
+arrays.tmac,\:bul.tmac,\:ordered.tmac,\:paragraphs.tmac
+T}
+ordered.tmac	T{
+Macros for ordered lists
+T}	arrays.tmac
+paragraphs.tmac	T{
+Specialized macros for common paragraphs within the context of a list
+environment.
+T}	\-
+.TE
+.LP
+Please note that you will generally want to source \fIlists.tmac\fP so as to
+source all other macro files in the table above, so that all necessary and spare
+features are ready at your disposal at anytime.
+Only play around with which files to include if you are confident in your skills
+in Troff.
+A case in point, \fIarrays.tmac\fP is almost always required on the low-level
+scheme of things no matter what type of list you are trying to set.
+.LP
+Because of the importance of all these files, they are the only files listed
+in the SHA512SUM checklist.
+.LP
+Files in the repository like README.rst and LICENSE are for you to read but
+obviously do not affect the functionality of the macro package.
+Other files like sed.arraysrm, &c. are miscellaneous files for maintainers that
+have their own self-descriptive information.
+Ignoring them is generally fine, unless you are maintaining the macro package.
+.SH VERSIONS
+.LP
+.B lists.tmac
+is provided as-is.
+There are no versions and the package is released by date and time, only
+branches in the Git repository as necessary.
+In essence, the release model is very similar to that of a rolling-release with
+the cutting-edge always provided.
+.LP
+You are very likely to want to use the \fImaster\fP branch of this package, as
+it is deemed the most stable as far as the testing eye can see.
+Should uncertainty occur, feel free to ask the author(s) what branch/release
+should be used for your use case.
+.LP
+As for documentation, time and effort is taken to reflect those changes within
+the appropriate portions of the manual pages.
+However, this is provided without the guarantee that the features in the macro
+package and its details in the manual page are in perfect synchrony.
+Mistakes can happen and facts can inadvertently be omitted; if such happens,
+please help us correct the manual pages.
+By all means, \fIalways\fP correct the manual pages to keep up with the macros,
+.I do not
+remove features from the macros in an attempt synchronize with the manual pages!
+.SH BUGS
+.SS Known bugs
+.LP
+None thus far!
+.if t .ft EMOJIR
+😇🙈
+.if t .ft
+.SS Reporting bugs
+.LP
+If there are bugs, please do make an effort to report to
+.UR https://github.com/katt64/lists.tmac/issues
+the issues page
+.UE
+no matter how trivial, or even try to fix them yourself if you can and then
+create a pull request.
+.LP
+If you cannot fix them yourself, don't worry: just file a bug report.
+However, do be sure that you are running the latest release of the macros before
+reporting any bugs.
+.LP
+Bug reports can be however trivial they must be, but keep in mind that they must
+be detailed enough such that the maintainers know what exactly is going on.
+Therefore, it is generally recommended to include the following things in your
+bug report in the following order:
+.IP 1. 3m
+The abstract of the problem you are facing.
+For example:
+.RS 5m
+Bulleted lists are suddenly not nesting properly after 37 nested orders on
+the 2nd and 3rd items of the list.
+.RE
+.IP 2.
+The Troff source text that clearly exemplifies and isolates the bugs.
+The bugs should be reproducible given this mere excerpt.
+Doing this isolation is useful so that it is not necessary to show your entire
+document to the public and it is easy for the maintainers to look for the bugs
+without getting too distracted.
+For example:
+.RS 5m
+.EX
+\&.{b \(mu
+\&.bb
+This is nesting well.
+\&.bb
+This is not; the margin falls back.
+\&.bb
+This is not doing well either.
+\&.bb
+This is okay.
+Strange!
+\&.}b
+.EE
+.RE
+.IP 3.
+The backtrace of the macro package's operation on the excerpt from No. 2.
+This is very useful so it is further known what's going on whilst the document
+and the list is being compiled and typeset onto the page.
+A very good backtrace can be printed to the Standard Error stream by adding the
+following lines \fBafter\fP the line to source the macro package.
+So, the top of the example excerpt from No. 2 should look like this:
+.RS 5m
+.EX
+\&.mso lists.tmac
+\&.nr trace-full 1
+\&.mso trace.tmac
+\&.{b
+\&.bb
+This is nesting well.
+.RE
+.EE
+You may be asked to put the two lines (\fC.nr trace-full 1\fP and \fC.mso
+trace.tmac\fP) \fBbefore\fP the line to source the macro package (\fC.so
+lists.tmac\fP).
+If that's the case, you may want to do that.
+.IP 4.
+The name and version of your Troff compiler, and related environment factors
+such as fonts, font sizes, page sizes, even the operating system, &c.
+This could be helpful.
+For example:
+.RS 5m
+I'm running GNU Troff version 1.22.2 on Gentoo Linux x86_64.
+I'm using Merriweather size 10 on 12.
+The paper size is US Letter.
+I'm also using EQN and TBL for equations and tables respectively.
+.RE
+.LP
+All this information could be very useful in hunting down bugs and finding the
+root cause of the problem.
+Remember to collect all you can!
+.LP
+This subsection will \fInot\fP be mentioned again for the respective types of
+list.
+If a bug pertains only to a type of list, this bug reporting procedure shall be
+used.
+.SH AUTHORS
+.LP
+Stephanie Björk (Katt) has been writing the macro package and manual
+pages documenting its aspects since the start of December 2017.
+She decided on the license for this package \(em the 4-clause BSD.
+.LP
+She can be contacted by
+.MT katt16777216@gmail.com
+email
+.ME
+or added on Snapchat by the username, \fCsuttiwit\fP.
+.LP
+Currently, there are no other authors involved.
+This section will be updated to reflect any changes without prior notice.
+.LP
+This macro package is a wonderful and miraculous thing that really deserves some
+maintanance.
+As of the time of writing, the author is a 17-year-old high school student
+aiming to further her education as a computer scientist in a university.
+The amount of school work, exam pressures, family expectations, and a full
+bucket list generally leads to stress and depression.
+So, more maintainers are really appreciated.
+If you would like to volunteer, contact her with your background pertaining to
+computer science and programming and some reasons why this project interests
+you.
+.LP
+For succinctness, hereafter read \fII, me, my, mine\fP as referring the author
+herself.
+.LP
+In no particular order, I would like to thank the following people from the
+groff mailing list community for their advice and suggestions:
+.IP \(bu 2m
+Pierre-Jean, for suggesting that the macro package works with Hierloom Troff;
+.IP \(bu
+Steffen Nurpmeso, for suggesting that the stack implementation should be
+extended to support the storage of strings;
+.IP \(bu
+and Ralph Corderoy, for
+.UR http://troff.org
+his website
+.UE ,
+without which I would not have known of Troff.
+.LP
+I would like to give special thanks to James Clark, Wener Lemberg, and Ted
+Harding for developing Groff; and Professor Brian W. Kernighan who guided me
+through Troff in the beginning stages.
+.LP
+Last but not least, I would like to specifically thank the following persons in
+no particular order:
+.IP \(bu 2m
+my mother, for her patience with me as I spent countless hours trying to get the
+macro package working, not least for without her, this macro package may not
+have existed;
+.IP \(bu \" Bjørk doesn't reply to my texts sometimes.  It really fucks me up.
+Bjørk, for saving my life and for her unwavering support every step of the
+way, not least for without her, this macro package may not have existed;
+.IP \(bu
+Francesca, for further guidance in the later stages of Troff with the
+\(lqprogramming\(rq features, and also for valuable help with some excerpts of
+source code;
+.IP \(bu
+and you \(em yes, you brave little thing who dares to try out my macro package:
+thank you for having hope in me and the things I write.
+.LP
+The fact that the list and paragraphs on top consist of persons who are all men
+and the list at the bottom consist of persons who are all women (maybe not you)
+is purely coincidental and by chance.
+.SH SEE ALSO
+.IP \(bu 2m
+.B lists_tmac_ex\fR(7)\fR
+\(em basic examples of \fBlists.tmac\fP usage and their source code.
+.IP \(bu
+.B lists_tmac_bul\fR(7)\fR
+\(em reference manual page for bulleted lists set by the macro package.
+.IP \(bu
+.B lists_tmac_ord\fR(7)\fR
+\(em reference manual page for totally ordered lists set by the macro package.
+.IP \(bu
+.UR README.rst
+The main README file
+.UE
+if you have not read it yet since you cloned this repository.

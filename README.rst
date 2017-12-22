@@ -233,7 +233,8 @@ bug report in the following order:
     .bb
     This is not doing well either.
     .bb
-    This is okay.  Strange!
+    This is okay.
+    Strange!
     .}b
 
 3. The backtrace of the macro package's operation on the excerpt from No. 2.
